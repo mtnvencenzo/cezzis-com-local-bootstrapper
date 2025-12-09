@@ -47,7 +47,7 @@ jobs:
     uses: mtnvencenzo/workflows/.github/workflows/py-build.yaml@main
     with:
       python_version: '3.12.3'
-      working_directory: './'
+      working_directory: '.'
       cache_dependencies: false
       ruff_config: '.ruff.toml'
       pytest_args: '-v'
@@ -65,7 +65,7 @@ jobs:
     needs: [build, gitVersion]
     uses: mtnvencenzo/workflows/.github/workflows/docker-build-and-push.yaml@main
     with:
-      working_directory: './'
+      working_directory: '.'
       allow_build_and_push: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref_name == 'main' }}
       artifact_name: 'cezzis_com_bootstrapper'
       docker_file_name: 'Dockerfile'
