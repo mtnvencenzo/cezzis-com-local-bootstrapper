@@ -2,13 +2,13 @@
         "version": "0.2.0",
         "configurations": [
             {
-                "name": "Run: Ingestion Agent",
+                "name": "Run: Bootstrapper",
                 "type": "debugpy",
                 "request": "launch",
-                "program": "app.py",
+                "program": "main.py",
                 "console": "integratedTerminal",
                 "python": "${workspaceFolder}/.venv/bin/python",
-                "cwd": "${workspaceFolder}/data_ingestion_agentic_workflow",
+                "cwd": "${workspaceFolder}/src/cezzis_com_bootstrapper",
                 "env": {
                     "ENV": "local"
                 }

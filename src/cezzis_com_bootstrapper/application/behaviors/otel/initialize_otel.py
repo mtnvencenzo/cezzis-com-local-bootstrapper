@@ -1,0 +1,36 @@
+import atexit
+import os
+import socket
+from importlib.metadata import version
+
+from cezzis_otel import OTelSettings, initialize_otel, shutdown_otel
+from opentelemetry.instrumentation.confluent_kafka import (  # type: ignore
+    ConfluentKafkaInstrumentor,
+)
+
+from cezzis_com_bootstrapper.domain import get_otel_options
+
+
+def initialize_opentelemetry() -> None:
+    """Initialize OpenTelemetry tracing and logging for the application."""
+
+    # Make sure toshutdown and gracefully flush the telemetry data on exit
+    atexit.register(shutdown_otel)
+
+    otel_options = get_otel_options()
+
+    initialize_otel(
+        settings=OTelSettings(
+            service_name=otel_options.otel_service_name,
+            service_namespace=otel_options.otel_service_namespace,
+            otlp_exporter_endpoint=otel_options.otel_exporter_otlp_endpoint,
+            otlp_exporter_auth_header=otel_options.otel_otlp_exporter_auth_header,
+            certificate_file=otel_options.certificate_file_path,
+            service_version=version("cezzis_com_bootstrapper"),
+            environment=os.environ.get("ENV", "unknown"),
+            instance_id=socket.gethostname(),
+            enable_logging=True,
+            enable_tracing=True,
+        ),
+        configure_tracing=lambda _: ConfluentKafkaInstrumentor().instrument(),
+    )
