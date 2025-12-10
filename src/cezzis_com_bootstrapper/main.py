@@ -6,8 +6,8 @@ from mediatr import Mediator
 
 from cezzis_com_bootstrapper.app_module import AppModule
 from cezzis_com_bootstrapper.application import initialize_opentelemetry
-from cezzis_com_bootstrapper.application.concerns.storage.commands.create_container_command import (
-    CreateContainerCommand,
+from cezzis_com_bootstrapper.application.concerns.storage.commands.create_containers_command import (
+    CreateContainersCommand,
 )
 
 logger = logging.getLogger(__name__)
@@ -40,8 +40,7 @@ async def main():
 
     mediator = Mediator(handler_class_manager=my_class_handler_manager)
 
-    create_container_command = CreateContainerCommand(container_name="my-container")
-    result = await mediator.send_async(create_container_command)
+    result = await mediator.send_async(CreateContainersCommand())
 
     if result:
         logger.info("Container created successfully")
