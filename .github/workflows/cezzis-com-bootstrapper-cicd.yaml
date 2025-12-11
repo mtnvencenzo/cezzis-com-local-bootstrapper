@@ -3,16 +3,14 @@ name: cicd-cezzis-com-bootstrapper
 on:
   pull_request:
     branches: [main]
-    paths: [
-      /**,
-      .github/workflows/cezzis-com-bootstrapper-cicd.yaml
-    ]
+    paths:
+      - '**'
+      - .github/workflows/cezzis-com-bootstrapper-cicd.yaml
   push:
     branches: [main]
-    paths: [
-      /**,
-      .github/workflows/cezzis-com-bootstrapper-cicd.yaml
-    ]
+    paths:
+      - '**'
+      - .github/workflows/cezzis-com-bootstrapper-cicd.yaml
 
   workflow_dispatch:
 
