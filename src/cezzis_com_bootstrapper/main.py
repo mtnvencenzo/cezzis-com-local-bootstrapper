@@ -25,14 +25,15 @@ async def main():
 
     logger.info("Bootstrapping completed successfully")
 
+
 def main_entry():
-    import asyncio
     try:
         asyncio.run(main())
     except KeyboardInterrupt:
         logger.info("Keyboard interrupt received. Shutting down...")
     finally:
         logger.info("Application shutdown complete.")
+
 
 if __name__ == "__main__":
     main_entry()
