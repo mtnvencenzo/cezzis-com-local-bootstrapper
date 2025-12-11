@@ -1,7 +1,11 @@
-.PHONY: install update build test lint format standards test coverage models
+.PHONY: install update build test lint format standards test coverage models post-install run all
 
 install:
 	poetry install --with dev
+
+post-install:
+	@make install
+	poetry run python .scripts/post_install.py
 
 update:
 	poetry update

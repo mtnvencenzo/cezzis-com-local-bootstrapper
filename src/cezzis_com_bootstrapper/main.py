@@ -1,29 +1,35 @@
-from injector import Injector
+import asyncio
+import logging
 
-from cezzis_com_bootstrapper.app_module import AppModule
+from mediatr import Mediator
+
+from cezzis_com_bootstrapper.app_module import injector
+from cezzis_com_bootstrapper.application import initialize_opentelemetry
+from cezzis_com_bootstrapper.application.concerns.storage.commands.create_containers_command import (
+    CreateContainersCommand,
+)
+
+logger = logging.getLogger("main")
 
 
-def create_injector() -> Injector:
-    return Injector([AppModule()])
-
-
-def main():
+async def main():
     """Main entry point for bootstrapping."""
-    # injector = create_injector()
+    global logger
 
-    # TODO: Add your bootstrapping tasks here:
-    # - Initialize queues
-    # - Setup blob storage
-    # - Initialize database
-    # - Seed data
+    initialize_opentelemetry()
+    logger = logging.getLogger("main")
+    logger.info("Starting Bootstrapper...")
 
-    print("Bootstrapping completed successfully")
+    mediator = injector.get(Mediator)
+    await mediator.send_async(CreateContainersCommand())
+
+    logger.info("Bootstrapping completed successfully")
 
 
 if __name__ == "__main__":
-    main()
-
-# app = FastAPI()
-
-# app.include_router(injector.get(SemanticSearchRouter))
-# app.include_router(injector.get(ConverstionalSearchRouter))
+    try:
+        asyncio.run(main())
+    except KeyboardInterrupt:
+        logger.info("Keyboard interrupt received. Shutting down...")
+    finally:
+        logger.info("Application shutdown complete.")
