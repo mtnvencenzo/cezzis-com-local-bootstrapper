@@ -10,7 +10,8 @@ class KafkaOptions(BaseSettings):
 
     Attributes:
         bootstrap_servers (str): Kafka bootstrap servers.
-        consumer_group (str): Kafka consumer group ID.
+        cocktails_update_topic_name (str): The cocktails update topic name.
+        default_topic_partitions (int): Default number of partitions for topics.
     """
 
     model_config = SettingsConfigDict(
@@ -18,7 +19,13 @@ class KafkaOptions(BaseSettings):
     )
 
     bootstrap_servers: str = Field(default="", validation_alias="KAFKA_BOOTSTRAP_SERVERS")
-    consumer_group: str = Field(default="", validation_alias="KAFKA_CONSUMER_GROUP")
+    cocktails_update_topic_name: str = Field(default="", validation_alias="KAFKA_COCKTAILS_UPDATE_TOPIC_NAME")
+    default_topic_partitions: int = Field(default=4, validation_alias="KAFKA_DEFAULT_TOPIC_PARTITIONS")
+    security_protocol: str = Field(default="SSL", validation_alias="KAFKA_SECURITY_PROTOCOL")
+    ssl_ca_location: str = Field(
+        default="",
+        validation_alias="KAFKA_SSL_CA_LOCATION",
+    )
 
 
 _logger: logging.Logger = logging.getLogger("kafka_options")
@@ -39,8 +46,14 @@ def get_kafka_options() -> KafkaOptions:
         # Validate required configuration
         if not _kafka_options.bootstrap_servers:
             raise ValueError("KAFKA_BOOTSTRAP_SERVERS environment variable is required")
-        if not _kafka_options.consumer_group:
-            raise ValueError("KAFKA_CONSUMER_GROUP environment variable is required")
+        if not _kafka_options.cocktails_update_topic_name:
+            raise ValueError("KAFKA_COCKTAILS_UPDATE_TOPIC_NAME environment variable is required")
+        if _kafka_options.default_topic_partitions <= 1:
+            raise ValueError("KAFKA_DEFAULT_TOPIC_PARTITIONS must be greater than 1")
+        if _kafka_options.security_protocol not in {"SSL", "PLAINTEXT", "SASL_SSL", "SASL_PLAINTEXT"}:
+            raise ValueError("KAFKA_SECURITY_PROTOCOL must be one of SSL, PLAINTEXT, SASL_SSL, SASL_PLAINTEXT")
+        if _kafka_options.security_protocol in {"SSL", "SASL_SSL"} and not _kafka_options.ssl_ca_location:
+            raise ValueError("KAFKA_SSL_CA_LOCATION is required when using SSL or SASL_SSL security protocol")
 
         _logger.info("Kafka options loaded successfully.")
 
