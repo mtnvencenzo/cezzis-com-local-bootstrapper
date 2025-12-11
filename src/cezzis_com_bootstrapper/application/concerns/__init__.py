@@ -1,5 +1,5 @@
-from cezzis_com_bootstrapper.application.concerns.storage import CreateContainersCommand
+from cezzis_com_bootstrapper.application.concerns.storage import CreateBlobStorageCommand
 
 __all__ = [
-    "CreateContainersCommand",
+    "CreateBlobStorageCommand",
 ]
