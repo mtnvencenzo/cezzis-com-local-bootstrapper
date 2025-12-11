@@ -1,4 +1,4 @@
-from injector import Binder, Injector, Module, Scope, noscope, singleton, threadlocal
+from injector import Binder, Injector, Module, noscope, singleton
 from mediatr import Mediator
 
 from cezzis_com_bootstrapper.application.concerns.storage.commands.create_containers_command import (
@@ -11,6 +11,7 @@ from cezzis_com_bootstrapper.infrastructure.services.iazure_blob_service import 
 
 def create_injector() -> Injector:
     return Injector([AppModule()])
+
 
 def my_class_handler_manager(handler_class, is_behavior=False):
     if is_behavior:
@@ -28,7 +29,4 @@ class AppModule(Module):
         binder.bind(CreateContainersCommandHandler, CreateContainersCommandHandler, scope=noscope)
 
 
-
-
 injector = create_injector()
-

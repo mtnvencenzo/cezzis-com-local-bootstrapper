@@ -11,6 +11,7 @@ from cezzis_com_bootstrapper.application.concerns.storage.commands.create_contai
 
 logger = logging.getLogger("main")
 
+
 async def main():
     """Main entry point for bootstrapping."""
     global logger
@@ -23,6 +24,7 @@ async def main():
     await mediator.send_async(CreateContainersCommand())
 
     logger.info("Bootstrapping completed successfully")
+
 
 if __name__ == "__main__":
     try:

@@ -1,4 +1,5 @@
 import logging
+
 from azure.storage.blob import BlobServiceClient, PublicAccess
 from injector import inject
 
@@ -30,12 +31,12 @@ class AzureBlobService(IAzureBlobService):
                 container_client.create_container(public_access=PublicAccess.CONTAINER)
                 self.logger.info(f"Container '{container_name}' created successfully.")
             else:
-                container_client.set_container_access_policy(signed_identifiers={}, public_access=PublicAccess.CONTAINER)
+                container_client.set_container_access_policy(
+                    signed_identifiers={}, public_access=PublicAccess.CONTAINER
+                )
                 self.logger.info(f"Container '{container_name}' already exists. Access policy updated to public.")
         except Exception as e:
             self.logger.exception(f"Failed to create or update container '{container_name}'", extra={"error": str(e)})
             raise
         finally:
             pass
-
-

@@ -8,6 +8,7 @@ from cezzis_com_bootstrapper.infrastructure.services.iazure_blob_service import 
 class CreateContainersCommand(GenericQuery[bool]):
     pass
 
+
 @Mediator.handler
 class CreateContainersCommandHandler:
     @inject

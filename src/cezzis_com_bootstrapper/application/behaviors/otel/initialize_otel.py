@@ -8,10 +8,11 @@ from cezzis_otel import OTelSettings, initialize_otel, shutdown_otel
 from opentelemetry.instrumentation.confluent_kafka import (  # type: ignore
     ConfluentKafkaInstrumentor,
 )
-from opentelemetry.instrumentation.requests import RequestsInstrumentor
 from opentelemetry.instrumentation.httpx import HTTPXClientInstrumentor
+from opentelemetry.instrumentation.requests import RequestsInstrumentor
 
 from cezzis_com_bootstrapper.domain import get_otel_options
+
 
 def initialize_opentelemetry() -> None:
     """Initialize OpenTelemetry tracing and logging for the application."""
@@ -38,8 +39,8 @@ def initialize_opentelemetry() -> None:
             ConfluentKafkaInstrumentor().instrument(),
             RequestsInstrumentor().instrument(),
             HTTPXClientInstrumentor().instrument(),
-            None
-        )[-1]
+            None,
+        )[-1],
     )
 
     logger = logging.getLogger("initialize_otel")
