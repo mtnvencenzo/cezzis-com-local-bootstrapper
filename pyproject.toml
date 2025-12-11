@@ -22,7 +22,7 @@ dependencies = [
 ]
 
 [project.scripts]
-cezzis-com-bootstrapper = "cezzis_com_bootstrapper.main:main"
+cezzis-com-bootstrapper = "cezzis_com_bootstrapper.main:main_entry"
 
 [tool.poetry]
 exclude = [
