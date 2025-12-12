@@ -10,8 +10,7 @@ RUN poetry config installer.parallel true
 WORKDIR /app/src
 
 # Copy only dependency files first (for better caching)
-COPY ./pyproject.toml ./poetry.lock ./README.md ./
-COPY ./.scripts/ ./.scripts/
+COPY ./pyproject.toml ./poetry.lock ./README.md ./post_install.py ./
 COPY ./src/cezzis_com_bootstrapper/ ./cezzis_com_bootstrapper/
 
 # Install dependencies with caching optimizations
@@ -24,7 +23,7 @@ RUN poetry build -o dist -v
 FROM python:3.12-slim
 
 WORKDIR /scripts
-COPY --from=builder /app/src/.scripts/post_install.py /scripts/
+COPY --from=builder /app/src/post_install.py /scripts/
 RUN chmod +x /scripts/post_install.py
 
 # Set working directory
