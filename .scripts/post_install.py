@@ -1,17 +1,21 @@
 # scripts/post_install.py
+import os
 from pathlib import Path
 
 import certifi
 
 
-def add_custom_certs():
+def add_custom_certs(azturite_cert_path: Path | None = None, docker_cert_path: Path | None = None) -> None:
     certifi_bundle = Path(certifi.where())
+
+    azturite_cert_path = azturite_cert_path or Path.home() / "Github/dev-certs/azurite-local/azurite-local.crt"
+    docker_cert_path = docker_cert_path or Path.home() / "Github/dev-certs/docker-local/docker-local.crt"
 
     # Define custom cert paths using home directory
     home = Path.home()
     cert_paths = [
-        home / "Github/dev-certs/azurite-local/azurite-local.crt",
-        home / "Github/dev-certs/docker-local/docker-local.crt",
+        azturite_cert_path,
+        docker_cert_path,
     ]
 
     # Read existing bundle
@@ -38,4 +42,7 @@ def add_custom_certs():
 
 
 if __name__ == "__main__":
-    add_custom_certs()
+    add_custom_certs(
+        azturite_cert_path=Path(str(os.environ.get("AZTURITE_CERT_PATH"))) if os.environ.get("AZTURITE_CERT_PATH") else None,
+        docker_cert_path=Path(str(os.environ.get("DOCKER_LOCAL_CERT_PATH"))) if os.environ.get("DOCKER_LOCAL_CERT_PATH") else None,
+    )
