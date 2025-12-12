@@ -12,7 +12,6 @@ def add_custom_certs(azturite_cert_path: Path | None = None, docker_cert_path: P
     docker_cert_path = docker_cert_path or Path.home() / "Github/dev-certs/docker-local/docker-local.crt"
 
     # Define custom cert paths using home directory
-    home = Path.home()
     cert_paths = [
         azturite_cert_path,
         docker_cert_path,
@@ -43,6 +42,10 @@ def add_custom_certs(azturite_cert_path: Path | None = None, docker_cert_path: P
 
 if __name__ == "__main__":
     add_custom_certs(
-        azturite_cert_path=Path(str(os.environ.get("AZTURITE_CERT_PATH"))) if os.environ.get("AZTURITE_CERT_PATH") else None,
-        docker_cert_path=Path(str(os.environ.get("DOCKER_LOCAL_CERT_PATH"))) if os.environ.get("DOCKER_LOCAL_CERT_PATH") else None,
+        azturite_cert_path=Path(str(os.environ.get("AZTURITE_CERT_PATH")))
+        if os.environ.get("AZTURITE_CERT_PATH")
+        else None,
+        docker_cert_path=Path(str(os.environ.get("DOCKER_LOCAL_CERT_PATH")))
+        if os.environ.get("DOCKER_LOCAL_CERT_PATH")
+        else None,
     )
