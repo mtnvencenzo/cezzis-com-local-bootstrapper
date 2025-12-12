@@ -1,8 +1,8 @@
 from injector import inject
 from mediatr import GenericQuery, Mediator
 
-from cezzis_com_bootstrapper.domain.config.azure_storage_options import AzureStorageOptions
-from cezzis_com_bootstrapper.infrastructure.services.iazure_blob_service import IAzureBlobService
+from cezzis_com_bootstrapper.domain.config import AzureStorageOptions
+from cezzis_com_bootstrapper.infrastructure.services import IAzureBlobService
 
 
 class CreateBlobStorageCommand(GenericQuery[bool]):
@@ -12,7 +12,7 @@ class CreateBlobStorageCommand(GenericQuery[bool]):
 
 
 @Mediator.handler
-class CreateBlobstorageCommandHandler:
+class CreateBlobStorageCommandHandler:
     @inject
     def __init__(self, azure_blob_service: IAzureBlobService, azure_storage_options: AzureStorageOptions):
         self.azure_blob_service = azure_blob_service

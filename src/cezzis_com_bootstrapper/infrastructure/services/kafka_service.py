@@ -3,7 +3,7 @@ import logging
 from confluent_kafka.admin import AdminClient, NewTopic
 from injector import inject
 
-from cezzis_com_bootstrapper.domain.config.kafka_options import KafkaOptions
+from cezzis_com_bootstrapper.domain.config import KafkaOptions
 from cezzis_com_bootstrapper.infrastructure.services.ikafka_service import IKafkaService
 
 

@@ -1,8 +1,8 @@
 from injector import inject
 from mediatr import GenericQuery, Mediator
 
-from cezzis_com_bootstrapper.domain.config.kafka_options import KafkaOptions
-from cezzis_com_bootstrapper.infrastructure.services.ikafka_service import IKafkaService
+from cezzis_com_bootstrapper.domain.config import KafkaOptions
+from cezzis_com_bootstrapper.infrastructure.services import IKafkaService
 
 
 class CreateKafkaCommand(GenericQuery[bool]):

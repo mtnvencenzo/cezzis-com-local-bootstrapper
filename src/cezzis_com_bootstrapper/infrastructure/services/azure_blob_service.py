@@ -3,7 +3,7 @@ import logging
 from azure.storage.blob import BlobServiceClient, PublicAccess
 from injector import inject
 
-from cezzis_com_bootstrapper.domain import AzureStorageOptions
+from cezzis_com_bootstrapper.domain.config import AzureStorageOptions
 from cezzis_com_bootstrapper.infrastructure.services.iazure_blob_service import IAzureBlobService
 
 
