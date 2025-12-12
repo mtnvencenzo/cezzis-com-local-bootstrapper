@@ -13,7 +13,13 @@ class CosmosDbService(ICosmosDbService):
     def __init__(self, cosmosdb_options: CosmosDbOptions) -> None:
         self.cosmosdb_options = cosmosdb_options
         self.logger = logging.getLogger("cosmosdb_service")
-        self.client = CosmosClient.from_connection_string(self.cosmosdb_options.connection_string)
+        # self.client = CosmosClient.from_connection_string(
+        #     self.cosmosdb_options.connection_string
+        # )
+        self.client = CosmosClient(
+            url=self.cosmosdb_options.account_endpoint,
+            credential=self.cosmosdb_options.account_key,
+        )
 
     async def create_database(self, database_name: str) -> None:
         self.logger.info(f"Creating Cosmos DB database: {database_name}")
@@ -24,15 +30,15 @@ class CosmosDbService(ICosmosDbService):
                     self.logger.info(f"Database {database_name} already exists. Skipping creation.")
                     return
         except Exception as e:
-            self.logger.exception(f"Failed to list databases: {e}")
-            raise
+            self.logger.exception("Failed to list databases", extra={"error": str(e)})
+            # raise
 
         try:
             await self.client.create_database(database_name)
             self.logger.info(f"Database {database_name} created successfully.")
         except Exception as e:
-            self.logger.exception(f"Failed to create database {database_name}: {e}")
-            raise
+            self.logger.exception(f"Failed to create database {database_name}", extra={"error": str(e)})
+            # raise
 
     async def create_container(self, database_name: str, container_name: str, partitionKeyPath: str) -> None:
         self.logger.info(
@@ -40,6 +46,10 @@ class CosmosDbService(ICosmosDbService):
         )
 
         db_client = self.client.get_database_client(database_name)
+        self.logger.info(
+            f"Obtained database client for database: {database_name} and url: {db_client.client_connection.url_connection}"
+        )
+        # db_client.client_connection.url_connection = db_client.client_connection.url_connection
 
         try:
             async for container in db_client.list_containers():
@@ -49,8 +59,8 @@ class CosmosDbService(ICosmosDbService):
                     )
                     return
         except Exception as e:
-            self.logger.exception(f"Failed to list containers in database {database_name}: {e}")
-            raise
+            self.logger.exception(f"Failed to list containers in database {database_name}", extra={"error": str(e)})
+            # raise
 
         try:
             await db_client.create_container(
@@ -58,5 +68,7 @@ class CosmosDbService(ICosmosDbService):
             )
             self.logger.info(f"Container {container_name} created successfully in database {database_name}.")
         except Exception as e:
-            self.logger.exception(f"Failed to create container {container_name} in database {database_name}: {e}")
-            raise
+            self.logger.exception(
+                f"Failed to create container {container_name} in database {database_name}", extra={"error": str(e)}
+            )
+            # raise

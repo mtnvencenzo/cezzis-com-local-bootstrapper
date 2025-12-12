@@ -34,6 +34,7 @@ def initialize_opentelemetry() -> None:
             instance_id=socket.gethostname(),
             enable_logging=True,
             enable_tracing=True,
+            enable_console_logging=True,
         ),
         configure_tracing=lambda _: (
             ConfluentKafkaInstrumentor().instrument(),

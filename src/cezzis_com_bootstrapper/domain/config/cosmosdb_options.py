@@ -14,6 +14,8 @@ class CosmosDbOptions(BaseSettings):
         cocktails_container_name (str): The name of the cocktails container.
         ingredients_container_name (str): The name of the ingredients container.
         accounts_container_name (str): The name of the accounts container.
+        account_key (str): The account key for the Cosmos DB account.
+        account_endpoint (str): The account endpoint for the Cosmos DB account.
     """
 
     model_config = SettingsConfigDict(
@@ -25,6 +27,8 @@ class CosmosDbOptions(BaseSettings):
     cocktails_container_name: str = Field(default="", validation_alias="COSMOSDB_COCKTAILS_CONTAINER_NAME")
     ingredients_container_name: str = Field(default="", validation_alias="COSMOSDB_INGREDIENTS_CONTAINER_NAME")
     accounts_container_name: str = Field(default="", validation_alias="COSMOSDB_ACCOUNTS_CONTAINER_NAME")
+    account_key: str = Field(default="", validation_alias="COSMOSDB_ACCOUNT_KEY")
+    account_endpoint: str = Field(default="", validation_alias="COSMOSDB_ACCOUNT_ENDPOINT")
 
 
 _logger: logging.Logger = logging.getLogger("cosmosdb_options")
@@ -53,6 +57,10 @@ def get_cosmosdb_options() -> CosmosDbOptions:
             raise ValueError("COSMOSDB_INGREDIENTS_CONTAINER_NAME environment variable is required")
         if not _cosmosdb_options.accounts_container_name:
             raise ValueError("COSMOSDB_ACCOUNTS_CONTAINER_NAME environment variable is required")
+        if not _cosmosdb_options.account_key:
+            raise ValueError("COSMOSDB_ACCOUNT_KEY environment variable is required")
+        if not _cosmosdb_options.account_endpoint:
+            raise ValueError("COSMOSDB_ACCOUNT_ENDPOINT environment variable is required")
 
         _logger.info("Cosmos DB options loaded successfully.")
 

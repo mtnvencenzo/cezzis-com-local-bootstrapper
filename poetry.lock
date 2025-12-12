@@ -300,14 +300,14 @@ types-confluent-kafka = ">=1.4.0,<2.0.0"
 
 [[package]]
 name = "cezzis-otel"
-version = "0.0.11"
+version = "0.0.12"
 description = "cezzis-otel is a lightweight Python library for working with opentelemetry.  It simplifies otel collector and otlpexporter integration."
 optional = false
 python-versions = "<3.15,>=3.12"
 groups = ["main"]
 files = [
-    {file = "cezzis_otel-0.0.11-py3-none-any.whl", hash = "sha256:cc356c4550679be5342a0f3ce006ed252700d7bd1d88fbd3a9a72c24d12b0f6a"},
-    {file = "cezzis_otel-0.0.11.tar.gz", hash = "sha256:47a3414b8f7553b6ab4de65bfbad225d9f2e1c9add5d171532009dcb9ac2d8bf"},
+    {file = "cezzis_otel-0.0.12-py3-none-any.whl", hash = "sha256:f0a027fa45edd610817a4135da301bb67d03f862ee2257700b183bb9ce48b9d2"},
+    {file = "cezzis_otel-0.0.12.tar.gz", hash = "sha256:a17636ba3f92c9d1a0652ce697d78c866ecd6a7b92fd44dcdd5c095c3d12e1bd"},
 ]
 
 [package.dependencies]
