@@ -19,6 +19,7 @@ class CosmosDbService(ICosmosDbService):
         self.client = CosmosClient(
             url=self.cosmosdb_options.account_endpoint,
             credential=self.cosmosdb_options.account_key,
+            connection_verify=False
         )
 
     async def create_database(self, database_name: str) -> None:
