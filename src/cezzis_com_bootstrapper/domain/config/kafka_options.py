@@ -22,10 +22,6 @@ class KafkaOptions(BaseSettings):
     cocktails_update_topic_name: str = Field(default="", validation_alias="KAFKA_COCKTAILS_UPDATE_TOPIC_NAME")
     default_topic_partitions: int = Field(default=4, validation_alias="KAFKA_DEFAULT_TOPIC_PARTITIONS")
     security_protocol: str = Field(default="SSL", validation_alias="KAFKA_SECURITY_PROTOCOL")
-    ssl_ca_location: str = Field(
-        default="",
-        validation_alias="KAFKA_SSL_CA_LOCATION",
-    )
 
 
 _logger: logging.Logger = logging.getLogger("kafka_options")
@@ -52,8 +48,6 @@ def get_kafka_options() -> KafkaOptions:
             raise ValueError("KAFKA_DEFAULT_TOPIC_PARTITIONS must be greater than 1")
         if _kafka_options.security_protocol not in {"SSL", "PLAINTEXT", "SASL_SSL", "SASL_PLAINTEXT"}:
             raise ValueError("KAFKA_SECURITY_PROTOCOL must be one of SSL, PLAINTEXT, SASL_SSL, SASL_PLAINTEXT")
-        if _kafka_options.security_protocol in {"SSL", "SASL_SSL"} and not _kafka_options.ssl_ca_location:
-            raise ValueError("KAFKA_SSL_CA_LOCATION is required when using SSL or SASL_SSL security protocol")
 
         _logger.info("Kafka options loaded successfully.")
 

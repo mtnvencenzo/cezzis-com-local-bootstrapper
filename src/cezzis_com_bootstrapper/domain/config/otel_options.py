@@ -13,7 +13,6 @@ class OTelOptions(BaseSettings):
         otel_service_name (str): OpenTelemetry service name.
         otel_service_namespace (str): OpenTelemetry service namespace.
         otel_otlp_exporter_auth_header (str): OpenTelemetry OTLP exporter authorization header
-        certificate_file_path (str | None): Path to the certificate file for secure communication.
     """
 
     model_config = SettingsConfigDict(
@@ -24,7 +23,6 @@ class OTelOptions(BaseSettings):
     otel_service_name: str = Field(default="", validation_alias="OTEL_SERVICE_NAME")
     otel_service_namespace: str = Field(default="", validation_alias="OTEL_SERVICE_NAMESPACE")
     otel_otlp_exporter_auth_header: str = Field(default="", validation_alias="OTEL_OTLP_AUTH_HEADER")
-    certificate_file_path: str | None = Field(default=None, validation_alias="OTEL_CERTIFICATE_FILE_PATH")
 
 
 _logger: logging.Logger = logging.getLogger("otel_options")

@@ -28,7 +28,6 @@ def initialize_opentelemetry() -> None:
             service_namespace=otel_options.otel_service_namespace,
             otlp_exporter_endpoint=otel_options.otel_exporter_otlp_endpoint,
             otlp_exporter_auth_header=otel_options.otel_otlp_exporter_auth_header,
-            certificate_file=otel_options.certificate_file_path,
             service_version=version("cezzis_com_bootstrapper"),
             environment=os.environ.get("ENV", "unknown"),
             instance_id=socket.gethostname(),

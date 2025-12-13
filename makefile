@@ -3,10 +3,6 @@
 install:
 	poetry install --with dev
 
-post-install:
-	@make install
-	poetry run python .scripts/post_install.py
-
 update:
 	poetry update
 

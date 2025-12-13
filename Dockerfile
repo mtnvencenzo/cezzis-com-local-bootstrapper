@@ -22,10 +22,6 @@ RUN poetry build -o dist -v
 # Final stage
 FROM python:3.12-slim
 
-WORKDIR /scripts
-COPY --from=builder /app/src/post_install.py /scripts/
-RUN chmod +x /scripts/post_install.py
-
 # Set working directory
 WORKDIR /app
 

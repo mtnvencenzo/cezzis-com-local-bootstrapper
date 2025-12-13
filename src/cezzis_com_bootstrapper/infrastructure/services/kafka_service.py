@@ -18,7 +18,6 @@ class KafkaService(IKafkaService):
             conf={
                 "bootstrap.servers": self.kafka_options.bootstrap_servers,
                 "security.protocol": self.kafka_options.security_protocol,
-                "ssl.ca.location": self.kafka_options.ssl_ca_location,
             },
             logger=self.logger,
         )
