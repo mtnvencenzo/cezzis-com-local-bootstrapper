@@ -10,7 +10,7 @@ RUN poetry config installer.parallel true
 WORKDIR /app/src
 
 # Copy only dependency files first (for better caching)
-COPY ./pyproject.toml ./poetry.lock ./README.md ./post_install.py ./
+COPY ./pyproject.toml ./poetry.lock ./README.md ./
 COPY ./src/cezzis_com_bootstrapper/ ./cezzis_com_bootstrapper/
 
 # Install dependencies with caching optimizations
