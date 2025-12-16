@@ -10,7 +10,7 @@ class KafkaOptions(BaseSettings):
 
     Attributes:
         bootstrap_servers (str): Kafka bootstrap servers.
-        cocktails_update_topic_name (str): The cocktails update topic name.
+        cocktails_topic_defs (str): The cocktails topic definitions in the format "topic1:partitions,topic2:partitions".
         default_topic_partitions (int): Default number of partitions for topics.
     """
 
@@ -19,9 +19,9 @@ class KafkaOptions(BaseSettings):
     )
 
     bootstrap_servers: str = Field(default="", validation_alias="KAFKA_BOOTSTRAP_SERVERS")
-    cocktails_update_topic_name: str = Field(default="", validation_alias="KAFKA_COCKTAILS_UPDATE_TOPIC_NAME")
+    cocktails_topic_defs: str = Field(default="", validation_alias="KAFKA_COCKTAILS_TOPIC_DEFS")
     default_topic_partitions: int = Field(default=4, validation_alias="KAFKA_DEFAULT_TOPIC_PARTITIONS")
-    security_protocol: str = Field(default="SSL", validation_alias="KAFKA_SECURITY_PROTOCOL")
+    security_protocol: str = Field(default="PLAINTEXT", validation_alias="KAFKA_SECURITY_PROTOCOL")
 
 
 _logger: logging.Logger = logging.getLogger("kafka_options")
@@ -42,8 +42,8 @@ def get_kafka_options() -> KafkaOptions:
         # Validate required configuration
         if not _kafka_options.bootstrap_servers:
             raise ValueError("KAFKA_BOOTSTRAP_SERVERS environment variable is required")
-        if not _kafka_options.cocktails_update_topic_name:
-            raise ValueError("KAFKA_COCKTAILS_UPDATE_TOPIC_NAME environment variable is required")
+        if not _kafka_options.cocktails_topic_defs:
+            raise ValueError("KAFKA_COCKTAILS_TOPIC_DEFS environment variable is required")
         if _kafka_options.default_topic_partitions <= 1:
             raise ValueError("KAFKA_DEFAULT_TOPIC_PARTITIONS must be greater than 1")
         if _kafka_options.security_protocol not in {"SSL", "PLAINTEXT", "SASL_SSL", "SASL_PLAINTEXT"}:
