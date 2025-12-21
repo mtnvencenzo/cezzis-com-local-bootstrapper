@@ -4,6 +4,7 @@ from injector import inject
 from mediatr import GenericQuery, Mediator
 
 from cezzis_com_bootstrapper.domain.config.rabbitmq_options import RabbitMqOptions
+from cezzis_com_bootstrapper.domain.messaging.rabbitmq_configuration import RabbitMqConfiguration
 from cezzis_com_bootstrapper.infrastructure.services.irabbitmq_admin_service import IRabbitMqAdminService
 
 
@@ -24,9 +25,12 @@ class CreateRabbitMqCommandHandler:
         self.logger = logging.getLogger("create_rabbitmq_command_handler")
 
     async def handle(self, request: CreateRabbitMqCommand) -> bool:
+        # --------------------------------------------------------
+        # Load the configuration if it exists, otherwise use an empty configuration
+        # --------------------------------------------------------
         rabbitmq_configuration = await self.rabbitmq_admin_service.load_from_file(
             self.rabbitmq_options.app_config_file_path
-        )
+        ) if self.rabbitmq_options.app_config_file_path else RabbitMqConfiguration( queues=[], exchanges=[], bindings=[])
 
         # --------------------------------------------------------
         # Create the vhost
