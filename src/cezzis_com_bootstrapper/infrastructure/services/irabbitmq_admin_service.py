@@ -7,10 +7,9 @@ from cezzis_com_bootstrapper.domain.messaging.rabbitmq_queue import RabbitMqQueu
 
 class IRabbitMqAdminService(ABC):
     @abstractmethod
-    async def LoadFromFileAsync(self, file_path: str) -> RabbitMqConfiguration:
+    async def load_from_file(self, file_path: str) -> RabbitMqConfiguration:
         """Loads RabbitMQ configuration from a JSON file."""
         pass
-
 
     @abstractmethod
     async def create_vhost_if_not_exists(self, vhost: str) -> None:

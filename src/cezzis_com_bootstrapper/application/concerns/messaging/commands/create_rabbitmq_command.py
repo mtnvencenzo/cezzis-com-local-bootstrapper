@@ -24,7 +24,7 @@ class CreateRabbitMqCommandHandler:
         self.logger = logging.getLogger("create_rabbitmq_command_handler")
 
     async def handle(self, request: CreateRabbitMqCommand) -> bool:
-        rabbitmq_configuration = await self.rabbitmq_admin_service.LoadFromFileAsync(
+        rabbitmq_configuration = await self.rabbitmq_admin_service.load_from_file(
             self.rabbitmq_options.app_config_file_path
         )
 

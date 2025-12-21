@@ -6,10 +6,10 @@ from typing import Any
 
 import aiofiles
 import requests
+from dacite import Config, from_dict
 from injector import inject
 from rabbitmq_admin import AdminAPI
 from requests.exceptions import HTTPError
-from dacite import from_dict, Config
 
 from cezzis_com_bootstrapper.domain.config.rabbitmq_options import RabbitMqOptions
 from cezzis_com_bootstrapper.domain.messaging.rabbitmq_binding import RabbitMqBinding
@@ -34,7 +34,7 @@ class RabbitMqAdminService(IRabbitMqAdminService):
             ),
         )
 
-    async def LoadFromFileAsync(self, file_path: str) -> RabbitMqConfiguration:
+    async def load_from_file(self, file_path: str) -> RabbitMqConfiguration:
         """Loads RabbitMQ configuration from a JSON file."""
 
         self.logger.info(f"Loading RabbitMQ configuration from {file_path}")
@@ -52,7 +52,8 @@ class RabbitMqAdminService(IRabbitMqAdminService):
                         RabbitMqBindingType: RabbitMqBindingType,
                         RabbitMqExchangeType: RabbitMqExchangeType,
                     }
-                ))
+                ),
+            )
             logger.info(f"Loaded RabbitMQ configuration from {file_path}")
 
             return rabbitmq_configuration
@@ -285,10 +286,11 @@ class RabbitMqAdminService(IRabbitMqAdminService):
                 destination=binding.get("destination", ""),
                 destination_type=RabbitMqBindingType(binding.get("destination_type", "")),
                 routing_key=binding.get("routing_key", ""),
-                arguments=binding.get("arguments", {})
+                arguments=binding.get("arguments", {}),
             )
 
-            if (not existing_binding.source
+            if (
+                not existing_binding.source
                 and existing_binding.routing_key == existing_binding.destination
                 and existing_binding.destination_type == RabbitMqBindingType.QUEUE
             ):
@@ -317,13 +319,23 @@ class RabbitMqAdminService(IRabbitMqAdminService):
             ):
                 self.logger.info(
                     f"Binding from '{binding_def.source}' to '{binding_def.destination}' already exists in vhost '{vhost}'",
-                    extra={"rabbitmq_vhost": vhost, "rabbitmq_exchange": binding_def.source, "rabbitmq_routing_key": binding_def.routing_key, "rabbitmq_destination": binding_def.destination},
+                    extra={
+                        "rabbitmq_vhost": vhost,
+                        "rabbitmq_exchange": binding_def.source,
+                        "rabbitmq_routing_key": binding_def.routing_key,
+                        "rabbitmq_destination": binding_def.destination,
+                    },
                 )
                 return
 
         self.logger.info(
             f"Creating binding from '{binding_def.source}' to '{binding_def.destination}' in vhost '{vhost}'",
-            extra={"rabbitmq_vhost": vhost, "rabbitmq_exchange": binding_def.source, "rabbitmq_routing_key": binding_def.routing_key, "rabbitmq_destination": binding_def.destination},
+            extra={
+                "rabbitmq_vhost": vhost,
+                "rabbitmq_exchange": binding_def.source,
+                "rabbitmq_routing_key": binding_def.routing_key,
+                "rabbitmq_destination": binding_def.destination,
+            },
         )
 
         self._post(
@@ -343,7 +355,12 @@ class RabbitMqAdminService(IRabbitMqAdminService):
         """Deletes a binding from a specific virtual host."""
         self.logger.info(
             f"Deleting binding from '{binding_def.source}' to '{binding_def.destination}' in vhost '{vhost}'",
-            extra={"rabbitmq_vhost": vhost, "rabbitmq_exchange": binding_def.source, "rabbitmq_routing_key": binding_def.routing_key, "rabbitmq_destination": binding_def.destination},
+            extra={
+                "rabbitmq_vhost": vhost,
+                "rabbitmq_exchange": binding_def.source,
+                "rabbitmq_routing_key": binding_def.routing_key,
+                "rabbitmq_destination": binding_def.destination,
+            },
         )
 
         bindings = self._get(
