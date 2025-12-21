@@ -41,7 +41,6 @@ class RabbitMqAdminService(IRabbitMqAdminService):
         self.logger.info(f"Loading RabbitMQ configuration from {file_path}")
 
         async with aiofiles.open(file_path, mode="r") as file:
-            logger = logging.getLogger("rabbitmq_configuration_loader")
             content = await file.read()
             data = json.loads(content)
 
@@ -55,7 +54,7 @@ class RabbitMqAdminService(IRabbitMqAdminService):
                     }
                 ),
             )
-            logger.info(f"Loaded RabbitMQ configuration from {file_path}")
+            self.logger.info(f"Loaded RabbitMQ configuration from {file_path}")
 
             return rabbitmq_configuration
 
