@@ -1,0 +1,89 @@
+{
+    "exchanges": [
+        {
+            "name": "cocktail-user-actions-topic",
+            "type": "topic",
+            "durable": true,
+            "auto_delete": false,
+            "internal": false,
+            "arguments": {}
+        },
+        {
+            "name": "account-updates-topic",
+            "type": "topic",
+            "durable": true,
+            "auto_delete": false,
+            "internal": false,
+            "arguments": {}
+        }
+    ],
+    "queues": [
+        {
+            "name": "cocktail-ratings-sync-queue",
+            "durable": true,
+            "auto_delete": false,
+            "arguments": {}
+        },
+        {
+            "name": "idp-account-profile-sync-queue",
+            "durable": true,
+            "auto_delete": false,
+            "arguments": {}
+        },
+        {
+            "name": "idp-account-email-sync-queue",
+            "durable": true,
+            "auto_delete": false,
+            "arguments": {}
+        },
+        {
+            "name": "idp-account-password-sync-queue",
+            "durable": true,
+            "auto_delete": false,
+            "arguments": {}
+        },
+        {
+            "name": "zoho-email-dispatch-queue",
+            "durable": true,
+            "auto_delete": false,
+            "arguments": {}
+        }
+    ],
+    "bindings": [
+        {
+            "source": "cocktail-user-actions-topic",
+            "destination": "cocktail-ratings-sync-queue",
+            "destination_type": "queue",
+            "routing_key": "cocktail.*.rated",
+            "arguments": {}
+        },
+        {
+            "source": "cocktail-user-actions-topic",
+            "destination": "zoho-email-dispatch-queue",
+            "destination_type": "queue",
+            "routing_key": "cocktail.*.recommendation",
+            "arguments": {}
+        },
+        {
+            "source": "account-updates-topic",
+            "destination": "idp-account-profile-sync-queue",
+            "destination_type": "queue",
+            "routing_key": "account.owned.profile.updated",
+            "arguments": {}
+        },
+        {
+            "source": "account-updates-topic",
+            "destination": "idp-account-email-sync-queue",
+            "destination_type": "queue",
+            "routing_key": "account.owned.email.updated",
+            "arguments": {}
+        },
+        {
+            "source": "account-updates-topic",
+            "destination": "idp-account-password-sync-queue",
+            "destination_type": "queue",
+            "routing_key": "account.owned.password.updated",
+            "arguments": {}
+        }
+    ]
+}

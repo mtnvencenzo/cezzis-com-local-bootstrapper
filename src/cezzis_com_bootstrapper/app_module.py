@@ -5,14 +5,17 @@ from cezzis_com_bootstrapper.application.concerns import (
     CreateBlobStorageCommandHandler,
     CreateCosmosDbCommandHandler,
     CreateKafkaCommandHandler,
+    CreateRabbitMqCommandHandler,
 )
 from cezzis_com_bootstrapper.domain.config import (
     AzureStorageOptions,
     CosmosDbOptions,
     KafkaOptions,
+    RabbitMqOptions,
     get_azure_storage_options,
     get_cosmosdb_options,
     get_kafka_options,
+    get_rabbitmq_options,
 )
 from cezzis_com_bootstrapper.infrastructure.services import (
     AzureBlobService,
@@ -20,7 +23,9 @@ from cezzis_com_bootstrapper.infrastructure.services import (
     IAzureBlobService,
     ICosmosDbService,
     IKafkaService,
+    IRabbitMqAdminService,
     KafkaService,
+    RabbitMqAdminService,
 )
 
 
@@ -51,6 +56,10 @@ class AppModule(Module):
         binder.bind(CosmosDbOptions, get_cosmosdb_options(), scope=singleton)
         binder.bind(ICosmosDbService, CosmosDbService, scope=singleton)
         binder.bind(CreateCosmosDbCommandHandler, CreateCosmosDbCommandHandler, scope=noscope)
+        # For RabbitMQ Setup
+        binder.bind(RabbitMqOptions, get_rabbitmq_options(), scope=singleton)
+        binder.bind(IRabbitMqAdminService, RabbitMqAdminService, scope=singleton)
+        binder.bind(CreateRabbitMqCommandHandler, CreateRabbitMqCommandHandler, scope=noscope)
 
 
 injector = create_injector()
