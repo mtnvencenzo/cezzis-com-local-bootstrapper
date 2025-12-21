@@ -36,7 +36,15 @@ class RabbitMqAdminService(IRabbitMqAdminService):
         )
 
     async def load_from_file(self, file_path: str) -> RabbitMqConfiguration:
-        """Loads RabbitMQ configuration from a JSON file."""
+        """Loads RabbitMQ configuration from a JSON file.
+
+        Args:
+            file_path (str): The path to the JSON configuration file.
+
+        Returns:
+            RabbitMqConfiguration: The loaded RabbitMQ configuration.
+
+        """
 
         self.logger.info(f"Loading RabbitMQ configuration from {file_path}")
 
@@ -59,7 +67,12 @@ class RabbitMqAdminService(IRabbitMqAdminService):
             return rabbitmq_configuration
 
     async def create_vhost_if_not_exists(self, vhost: str) -> None:
-        """Creates a RabbitMQ virtual host if it does not already exist."""
+        """Creates a RabbitMQ virtual host if it does not already exist.
+
+        Args:
+            vhost (str): The name of the virtual host to create.
+
+        """
 
         existing_vhost: Any | None = None
 
@@ -80,7 +93,14 @@ class RabbitMqAdminService(IRabbitMqAdminService):
             self.logger.info(f"RabbitMQ vhost '{vhost}' already exists", extra={"rabbitmq_vhost": vhost})
 
     async def create_user_if_not_exists(self, username: str, password: str, tags: str = "") -> None:
-        """Creates a RabbitMQ user if it does not already exist."""
+        """Creates a RabbitMQ user if it does not already exist.
+
+        Args:
+            username (str): The username of the RabbitMQ user.
+            password (str): The password for the RabbitMQ user.
+            tags (str, optional): Comma-separated list of tags for the user. Defaults to
+
+        """
         existing_user: Any | None = None
 
         try:
@@ -102,7 +122,16 @@ class RabbitMqAdminService(IRabbitMqAdminService):
     async def assign_vhost_permissions(
         self, vhost: str, username: str, configure: str = ".*", write: str = ".*", read: str = ".*"
     ) -> None:
-        """Assigns permissions to a user for a specific virtual host."""
+        """Assigns permissions to a user for a specific virtual host.
+
+        Args:
+            vhost (str): The name of the virtual host.
+            username (str): The username of the RabbitMQ user.
+            configure (str, optional): The configure permission regex. Defaults to ".*".
+            write (str, optional): The write permission regex. Defaults to ".*".
+            read (str, optional): The read permission regex. Defaults to ".*".
+
+        """
         self.logger.info(
             f"Assigning permissions for user '{username}' on vhost '{vhost}'",
             extra={"rabbitmq_user": username, "rabbitmq_vhost": vhost},
@@ -161,7 +190,15 @@ class RabbitMqAdminService(IRabbitMqAdminService):
         )
 
     async def list_vhost_users(self, vhost: str) -> list[str]:
-        """Lists all RabbitMQ users for a specific virtual host."""
+        """Lists all RabbitMQ users for a specific virtual host.
+
+        Args:
+            vhost (str): The name of the virtual host.
+
+        Returns:
+            list[str]: A list of usernames associated with the virtual host.
+
+        """
         existing_users = await asyncio.to_thread(self.admin_client.list_users)
 
         vhost_users: list[str] = []
@@ -176,12 +213,25 @@ class RabbitMqAdminService(IRabbitMqAdminService):
 
         return vhost_users
 
-    async def delete_user_from_vhost(self, vhost: str, username: str) -> None:
-        """Deletes a RabbitMQ user from a specific virtual host."""
+    async def delete_user(self, username: str) -> None:
+        """Deletes a RabbitMQ user.
+
+        Args:
+            username (str): The username of the RabbitMQ user.
+
+        """
         await asyncio.to_thread(self.admin_client.delete_user, name=username)
 
     async def list_exchanges_in_vhost(self, vhost: str) -> list[str]:
-        """Lists all exchanges in a specific virtual host, excluding those starting with 'amq.' and empty names."""
+        """Lists all exchanges in a specific virtual host, excluding those starting with 'amq.' and empty names.
+
+        Args:
+            vhost (str): The name of the virtual host.
+
+        Returns:
+            list[str]: A list of exchange names in the virtual host.
+
+        """
         exchanges = await asyncio.to_thread(self.admin_client.list_exchanges_for_vhost, vhost=vhost)
         filtered = []
         for exchange in exchanges:
@@ -192,7 +242,13 @@ class RabbitMqAdminService(IRabbitMqAdminService):
         return filtered
 
     async def create_exchange_if_not_exists(self, vhost: str, exchange_def: RabbitMqExchange) -> None:
-        """Creates an exchange in a specific virtual host if it does not already exist."""
+        """Creates an exchange in a specific virtual host if it does not already exist.
+
+        Args:
+            vhost (str): The name of the virtual host.
+            exchange_def (RabbitMqExchange): The definition of the exchange to create.
+
+        """
 
         if exchange_def.name.startswith("amq."):
             raise ValueError(f"Cannot create exchange with reserved name '{exchange_def.name}'.")
@@ -224,7 +280,13 @@ class RabbitMqAdminService(IRabbitMqAdminService):
         )
 
     async def delete_exchange_from_vhost(self, vhost: str, exchange_name: str) -> None:
-        """Deletes an exchange from a specific virtual host."""
+        """Deletes an exchange from a specific virtual host.
+
+        Args:
+            vhost (str): The name of the virtual host.
+            exchange_name (str): The name of the exchange to delete.
+
+        """
         if exchange_name.startswith("amq."):
             raise ValueError(f"Cannot delete exchange with reserved name '{exchange_name}'.")
 
@@ -239,14 +301,28 @@ class RabbitMqAdminService(IRabbitMqAdminService):
         )
 
     async def list_queues_in_vhost(self, vhost: str) -> list[str]:
-        """Lists all queues in a specific virtual host."""
+        """Lists all queues in a specific virtual host.
+
+        Args:
+            vhost (str): The name of the virtual host.
+
+        Returns:
+            list[str]: A list of queue names in the virtual host.
+
+        """
 
         queues = await self._get("/api/queues/{0}".format(urllib.parse.quote_plus(vhost)))
 
         return [queue["name"] for queue in queues]
 
     async def create_queue_for_vhost(self, vhost: str, queue_def: RabbitMqQueue) -> None:
-        """Creates a queue in a specific virtual host."""
+        """Creates a queue in a specific virtual host.
+
+        Args:
+            vhost (str): The name of the virtual host.
+            queue_def (RabbitMqQueue): The definition of the queue to create.
+
+        """
         self.logger.info(
             f"Creating queue '{queue_def.name}' in vhost '{vhost}'",
             extra={"rabbitmq_queue": queue_def.name, "rabbitmq_vhost": vhost},
@@ -262,7 +338,13 @@ class RabbitMqAdminService(IRabbitMqAdminService):
         )
 
     async def create_queue_if_not_exists(self, vhost: str, queue_def: RabbitMqQueue) -> None:
-        """Creates a queue in a specific virtual host if it does not already exist."""
+        """Creates a queue in a specific virtual host if it does not already exist.
+
+        Args:
+            vhost (str): The name of the virtual host.
+            queue_def (RabbitMqQueue): The definition of the queue to create.
+
+        """
         existing_queues = await self.list_queues_in_vhost(vhost=vhost)
 
         for queue in existing_queues:
@@ -281,7 +363,13 @@ class RabbitMqAdminService(IRabbitMqAdminService):
         await self.create_queue_for_vhost(vhost=vhost, queue_def=queue_def)
 
     async def delete_queue_for_vhost(self, vhost: str, queue_name: str) -> None:
-        """Deletes a queue from a specific virtual host."""
+        """Deletes a queue from a specific virtual host.
+
+        Args:
+            vhost (str): The name of the virtual host.
+            queue_name (str): The name of the queue to delete.
+
+        """
         self.logger.info(
             f"Deleting queue '{queue_name}' from vhost '{vhost}'",
             extra={"rabbitmq_queue": queue_name, "rabbitmq_vhost": vhost},
@@ -291,7 +379,15 @@ class RabbitMqAdminService(IRabbitMqAdminService):
         )
 
     async def list_bindings_in_vhost(self, vhost: str) -> list[RabbitMqBinding]:
-        """Lists all bindings in a specific virtual host."""
+        """Lists all bindings in a specific virtual host.
+
+        Args:
+            vhost (str): The name of the virtual host.
+
+        Returns:
+            list[RabbitMqBinding]: A list of bindings in the virtual host.
+
+        """
         bindings = await self._get("/api/bindings/{0}".format(urllib.parse.quote_plus(vhost)))
 
         binding_list: list[RabbitMqBinding] = []
@@ -319,7 +415,13 @@ class RabbitMqAdminService(IRabbitMqAdminService):
         return binding_list
 
     async def create_binding_if_not_exists(self, vhost: str, binding_def: RabbitMqBinding) -> None:
-        """Creates a binding in a specific virtual host if it does not already exist."""
+        """Creates a binding in a specific virtual host if it does not already exist.
+
+        Args:
+            vhost (str): The name of the virtual host.
+            binding_def (RabbitMqBinding): The definition of the binding to create.
+
+        """
 
         if binding_def.destination_type not in [RabbitMqBindingType.QUEUE, RabbitMqBindingType.EXCHANGE]:
             raise ValueError(f"Invalid destination_type '{binding_def.destination_type}' for binding.")
@@ -368,7 +470,13 @@ class RabbitMqAdminService(IRabbitMqAdminService):
         )
 
     async def delete_binding_from_vhost(self, vhost: str, binding_def: RabbitMqBinding) -> None:
-        """Deletes a binding from a specific virtual host."""
+        """Deletes a binding from a specific virtual host.
+
+        Args:
+            vhost (str): The name of the virtual host.
+            binding_def (RabbitMqBinding): The definition of the binding to delete.
+
+        """
         self.logger.info(
             f"Deleting binding from '{binding_def.source}' to '{binding_def.destination}' in vhost '{vhost}'",
             extra={
@@ -401,9 +509,15 @@ class RabbitMqAdminService(IRabbitMqAdminService):
                 )
                 return
 
-    async def _get(self, path: str):
-        """
-        A wrapper for getting things from the RabbitMQ Management HTTP API using aiohttp.
+    async def _get(self, path: str) -> Any:
+        """A wrapper for getting things from the RabbitMQ Management HTTP API using aiohttp.
+
+        Args:
+            path (str): The API path to get.
+
+        Returns:
+            Any: The JSON response from the API.
+
         """
         url = self.admin_client.url + path
         auth = aiohttp.BasicAuth(*self.admin_client.auth)
@@ -414,9 +528,13 @@ class RabbitMqAdminService(IRabbitMqAdminService):
                 response.raise_for_status()
                 return await response.json()
 
-    async def _put(self, path: str, data: dict):
-        """
-        A wrapper for upserting things from the RabbitMQ Management HTTP API using aiohttp.
+    async def _put(self, path: str, data: dict) -> None:
+        """A wrapper for upserting things from the RabbitMQ Management HTTP API using aiohttp.
+
+        Args:
+            path (str): The API path to put.
+            data (dict): The JSON data to send.
+
         """
         url = self.admin_client.url + path
         auth = aiohttp.BasicAuth(*self.admin_client.auth)
@@ -426,9 +544,13 @@ class RabbitMqAdminService(IRabbitMqAdminService):
             async with session.put(url, json=data) as response:
                 response.raise_for_status()
 
-    async def _post(self, path: str, data: dict):
-        """
-        A wrapper for creating things from the RabbitMQ Management HTTP API using aiohttp.
+    async def _post(self, path: str, data: dict) -> None:
+        """A wrapper for creating things from the RabbitMQ Management HTTP API using aiohttp.
+
+        Args:
+            path (str): The API path to post.
+            data (dict): The JSON data to send.
+
         """
         url = self.admin_client.url + path
         auth = aiohttp.BasicAuth(*self.admin_client.auth)
@@ -438,9 +560,12 @@ class RabbitMqAdminService(IRabbitMqAdminService):
             async with session.post(url, json=data) as response:
                 response.raise_for_status()
 
-    async def _delete(self, path: str):
-        """
-        A wrapper for deleting things from the RabbitMQ Management HTTP API using aiohttp.
+    async def _delete(self, path: str) -> None:
+        """A wrapper for deleting things from the RabbitMQ Management HTTP API using aiohttp.
+
+        Args:
+            path (str): The API path to delete.
+
         """
         url = self.admin_client.url + path
         auth = aiohttp.BasicAuth(*self.admin_client.auth)
