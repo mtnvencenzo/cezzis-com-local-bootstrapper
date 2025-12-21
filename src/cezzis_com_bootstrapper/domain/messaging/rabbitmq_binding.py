@@ -9,5 +9,5 @@ class RabbitMqBinding:
     source: str
     destination: str
     destination_type: RabbitMqBindingType = RabbitMqBindingType.QUEUE
-    binding_key: str = ""
+    routing_key: str = ""
     arguments: dict = dataclasses.field(default_factory=dict)

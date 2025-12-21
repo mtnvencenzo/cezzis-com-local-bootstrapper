@@ -203,7 +203,7 @@ class RabbitMqAdminService(IRabbitMqAdminService):
             exchange=exchange_def.name,
             vhost=vhost,
             body={
-                "type": exchange_def.type,
+                "type": exchange_def.type.value,
                 "durable": exchange_def.durable,
                 "auto_delete": exchange_def.auto_delete,
                 "internal": exchange_def.internal,
@@ -284,12 +284,12 @@ class RabbitMqAdminService(IRabbitMqAdminService):
                 source=binding.get("source", ""),
                 destination=binding.get("destination", ""),
                 destination_type=RabbitMqBindingType(binding.get("destination_type", "")),
-                binding_key=binding.get("routing_key", ""),
+                routing_key=binding.get("routing_key", ""),
                 arguments=binding.get("arguments", {})
             )
 
             if (not existing_binding.source
-                and existing_binding.binding_key == existing_binding.destination
+                and existing_binding.routing_key == existing_binding.destination
                 and existing_binding.destination_type == RabbitMqBindingType.QUEUE
             ):
                 # Skip default direct queue bindings
@@ -313,17 +313,17 @@ class RabbitMqAdminService(IRabbitMqAdminService):
                 binding.source == binding_def.source
                 and binding.destination == binding_def.destination
                 and binding.destination_type == binding_def.destination_type
-                and binding.binding_key == binding_def.binding_key
+                and binding.routing_key == binding_def.routing_key
             ):
                 self.logger.info(
                     f"Binding from '{binding_def.source}' to '{binding_def.destination}' already exists in vhost '{vhost}'",
-                    extra={"rabbitmq_vhost": vhost, "rabbitmq_exchange": binding_def.source, "rabbitmq_binding_key": binding_def.binding_key, "rabbitmq_destination": binding_def.destination},
+                    extra={"rabbitmq_vhost": vhost, "rabbitmq_exchange": binding_def.source, "rabbitmq_routing_key": binding_def.routing_key, "rabbitmq_destination": binding_def.destination},
                 )
                 return
 
         self.logger.info(
             f"Creating binding from '{binding_def.source}' to '{binding_def.destination}' in vhost '{vhost}'",
-            extra={"rabbitmq_vhost": vhost, "rabbitmq_exchange": binding_def.source, "rabbitmq_binding_key": binding_def.binding_key, "rabbitmq_destination": binding_def.destination},
+            extra={"rabbitmq_vhost": vhost, "rabbitmq_exchange": binding_def.source, "rabbitmq_routing_key": binding_def.routing_key, "rabbitmq_destination": binding_def.destination},
         )
 
         self._post(
@@ -334,7 +334,7 @@ class RabbitMqAdminService(IRabbitMqAdminService):
                 urllib.parse.quote_plus(binding_def.destination),
             ),
             data={
-                "routing_key": binding_def.binding_key,
+                "routing_key": binding_def.routing_key,
                 "arguments": binding_def.arguments,
             },
         )
@@ -343,7 +343,7 @@ class RabbitMqAdminService(IRabbitMqAdminService):
         """Deletes a binding from a specific virtual host."""
         self.logger.info(
             f"Deleting binding from '{binding_def.source}' to '{binding_def.destination}' in vhost '{vhost}'",
-            extra={"rabbitmq_vhost": vhost, "rabbitmq_exchange": binding_def.source, "rabbitmq_binding_key": binding_def.binding_key, "rabbitmq_destination": binding_def.destination},
+            extra={"rabbitmq_vhost": vhost, "rabbitmq_exchange": binding_def.source, "rabbitmq_routing_key": binding_def.routing_key, "rabbitmq_destination": binding_def.destination},
         )
 
         bindings = self._get(
@@ -356,7 +356,7 @@ class RabbitMqAdminService(IRabbitMqAdminService):
         )
 
         for binding in bindings:
-            if binding.get("routing_key", "") == binding_def.binding_key:
+            if binding.get("routing_key", "") == binding_def.routing_key:
                 self._delete(
                     path="/api/bindings/{0}/e/{1}/{2}/{3}/{4}".format(
                         urllib.parse.quote_plus(vhost),

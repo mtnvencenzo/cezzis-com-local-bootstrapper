@@ -54,35 +54,35 @@
             "source": "cocktail-user-actions-topic",
             "destination": "cocktail-ratings-sync-queue",
             "destination_type": "queue",
-            "binding_key": "cocktail.*.rated",
+            "routing_key": "cocktail.*.rated",
             "arguments": {}
         },
         {
             "source": "cocktail-user-actions-topic",
             "destination": "zoho-email-dispatch-queue",
             "destination_type": "queue",
-            "binding_key": "cocktail.*.recommendation",
+            "routing_key": "cocktail.*.recommendation",
             "arguments": {}
         },
         {
             "source": "account-updates-topic",
             "destination": "idp-account-profile-sync-queue",
             "destination_type": "queue",
-            "binding_key": "account.owned.profile.updated",
+            "routing_key": "account.owned.profile.updated",
             "arguments": {}
         },
         {
             "source": "account-updates-topic",
             "destination": "idp-account-email-sync-queue",
             "destination_type": "queue",
-            "binding_key": "account.owned.email.updated",
+            "routing_key": "account.owned.email.updated",
             "arguments": {}
         },
         {
             "source": "account-updates-topic",
             "destination": "idp-account-password-sync-queue",
             "destination_type": "queue",
-            "binding_key": "account.owned.password.updated",
+            "routing_key": "account.owned.password.updated",
             "arguments": {}
         }
     ]
