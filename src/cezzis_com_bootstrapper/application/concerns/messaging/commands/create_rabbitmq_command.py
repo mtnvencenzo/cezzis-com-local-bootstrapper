@@ -28,9 +28,11 @@ class CreateRabbitMqCommandHandler:
         # --------------------------------------------------------
         # Load the configuration if it exists, otherwise use an empty configuration
         # --------------------------------------------------------
-        rabbitmq_configuration = await self.rabbitmq_admin_service.load_from_file(
-            self.rabbitmq_options.app_config_file_path
-        ) if self.rabbitmq_options.app_config_file_path else RabbitMqConfiguration( queues=[], exchanges=[], bindings=[])
+        rabbitmq_configuration = (
+            await self.rabbitmq_admin_service.load_from_file(self.rabbitmq_options.app_config_file_path)
+            if self.rabbitmq_options.app_config_file_path
+            else RabbitMqConfiguration(queues=[], exchanges=[], bindings=[])
+        )
 
         # --------------------------------------------------------
         # Create the vhost

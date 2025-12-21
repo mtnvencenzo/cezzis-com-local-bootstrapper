@@ -5,7 +5,7 @@ from copy import deepcopy
 from typing import Any
 
 import aiofiles
-import requests
+import aiohttp
 from dacite import Config, from_dict
 from injector import inject
 from rabbitmq_admin import AdminAPI
@@ -223,9 +223,9 @@ class RabbitMqAdminService(IRabbitMqAdminService):
         )
 
     async def list_queues_in_vhost(self, vhost: str) -> list[str]:
-        """Lists all exchanges in a specific virtual host."""
+        """Lists all queues in a specific virtual host."""
 
-        queues = self._get("/api/queues/{0}".format(urllib.parse.quote_plus(vhost)))
+        queues = await self._get("/api/queues/{0}".format(urllib.parse.quote_plus(vhost)))
 
         return [queue["name"] for queue in queues]
 
@@ -235,7 +235,7 @@ class RabbitMqAdminService(IRabbitMqAdminService):
             f"Creating queue '{queue_def.name}' in vhost '{vhost}'",
             extra={"rabbitmq_queue": queue_def.name, "rabbitmq_vhost": vhost},
         )
-        self._put(
+        await self._put(
             path="/api/queues/{0}/{1}".format(urllib.parse.quote_plus(vhost), urllib.parse.quote_plus(queue_def.name)),
             data={
                 "durable": queue_def.durable,
@@ -270,13 +270,13 @@ class RabbitMqAdminService(IRabbitMqAdminService):
             f"Deleting queue '{queue_name}' from vhost '{vhost}'",
             extra={"rabbitmq_queue": queue_name, "rabbitmq_vhost": vhost},
         )
-        self._delete(
+        await self._delete(
             path="/api/queues/{0}/{1}".format(urllib.parse.quote_plus(vhost), urllib.parse.quote_plus(queue_name))
         )
 
     async def list_bindings_in_vhost(self, vhost: str) -> list[RabbitMqBinding]:
         """Lists all bindings in a specific virtual host."""
-        bindings = self._get("/api/bindings/{0}".format(urllib.parse.quote_plus(vhost)))
+        bindings = await self._get("/api/bindings/{0}".format(urllib.parse.quote_plus(vhost)))
 
         binding_list: list[RabbitMqBinding] = []
 
@@ -338,7 +338,7 @@ class RabbitMqAdminService(IRabbitMqAdminService):
             },
         )
 
-        self._post(
+        await self._post(
             path="/api/bindings/{0}/e/{1}/{2}/{3}".format(
                 urllib.parse.quote_plus(vhost),
                 urllib.parse.quote_plus(binding_def.source),
@@ -363,7 +363,7 @@ class RabbitMqAdminService(IRabbitMqAdminService):
             },
         )
 
-        bindings = self._get(
+        bindings = await self._get(
             "/api/bindings/{0}/e/{1}/{2}/{3}".format(
                 urllib.parse.quote_plus(vhost),
                 urllib.parse.quote_plus(binding_def.source),
@@ -374,7 +374,7 @@ class RabbitMqAdminService(IRabbitMqAdminService):
 
         for binding in bindings:
             if binding.get("routing_key", "") == binding_def.routing_key:
-                self._delete(
+                await self._delete(
                     path="/api/bindings/{0}/e/{1}/{2}/{3}/{4}".format(
                         urllib.parse.quote_plus(vhost),
                         urllib.parse.quote_plus(binding_def.source),
@@ -385,64 +385,51 @@ class RabbitMqAdminService(IRabbitMqAdminService):
                 )
                 return
 
-    def _get(self, path: str):
+    async def _get(self, path: str):
         """
-        A wrapper for getting things from the RabbitMQ Management HTTP API.
+        A wrapper for getting things from the RabbitMQ Management HTTP API using aiohttp.
         """
-        kwargs = {"url": self.admin_client.url + path}
-        kwargs["auth"] = self.admin_client.auth
-
+        url = self.admin_client.url + path
+        auth = aiohttp.BasicAuth(*self.admin_client.auth)
         headers = deepcopy(self.admin_client.headers)
-        headers.update(kwargs.get("headers", {}))
-        kwargs["headers"] = headers
 
-        response = requests.get(**kwargs)
-        response.raise_for_status()
+        async with aiohttp.ClientSession(auth=auth, headers=headers) as session:
+            async with session.get(url) as response:
+                response.raise_for_status()
+                return await response.json()
 
-        return response.json()
-
-    def _put(self, path: str, data: dict):
+    async def _put(self, path: str, data: dict):
         """
-        A wrapper for putting things to the RabbitMQ Management HTTP API.
+        A wrapper for upserting things from the RabbitMQ Management HTTP API using aiohttp.
         """
-        kwargs = {"url": self.admin_client.url + path}
-        kwargs["auth"] = self.admin_client.auth
-
+        url = self.admin_client.url + path
+        auth = aiohttp.BasicAuth(*self.admin_client.auth)
         headers = deepcopy(self.admin_client.headers)
-        headers.update(kwargs.get("headers", {}))
-        kwargs["headers"] = headers
 
-        kwargs["data"] = json.dumps(data)
+        async with aiohttp.ClientSession(auth=auth, headers=headers) as session:
+            async with session.put(url, json=data) as response:
+                response.raise_for_status()
 
-        response = requests.put(**kwargs)
-        response.raise_for_status()
-
-    def _post(self, path: str, data: dict):
+    async def _post(self, path: str, data: dict):
         """
-        A wrapper for putting things to the RabbitMQ Management HTTP API.
+        A wrapper for creating things from the RabbitMQ Management HTTP API using aiohttp.
         """
-        kwargs = {"url": self.admin_client.url + path}
-        kwargs["auth"] = self.admin_client.auth
-
+        url = self.admin_client.url + path
+        auth = aiohttp.BasicAuth(*self.admin_client.auth)
         headers = deepcopy(self.admin_client.headers)
-        headers.update(kwargs.get("headers", {}))
-        kwargs["headers"] = headers
 
-        kwargs["data"] = json.dumps(data)
+        async with aiohttp.ClientSession(auth=auth, headers=headers) as session:
+            async with session.post(url, json=data) as response:
+                response.raise_for_status()
 
-        response = requests.post(**kwargs)
-        response.raise_for_status()
-
-    def _delete(self, path: str):
+    async def _delete(self, path: str):
         """
-        A wrapper for deleting things from the RabbitMQ Management HTTP API.
+        A wrapper for deleting things from the RabbitMQ Management HTTP API using aiohttp.
         """
-        kwargs = {"url": self.admin_client.url + path}
-        kwargs["auth"] = self.admin_client.auth
-
+        url = self.admin_client.url + path
+        auth = aiohttp.BasicAuth(*self.admin_client.auth)
         headers = deepcopy(self.admin_client.headers)
-        headers.update(kwargs.get("headers", {}))
-        kwargs["headers"] = headers
 
-        response = requests.delete(**kwargs)
-        response.raise_for_status()
+        async with aiohttp.ClientSession(auth=auth, headers=headers) as session:
+            async with session.delete(url) as response:
+                response.raise_for_status()

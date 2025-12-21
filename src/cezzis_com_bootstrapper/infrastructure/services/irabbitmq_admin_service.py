@@ -55,7 +55,7 @@ class IRabbitMqAdminService(ABC):
 
     @abstractmethod
     async def list_queues_in_vhost(self, vhost: str) -> list[str]:
-        """Lists all exchanges in a specific virtual host."""
+        """Lists all queues in a specific virtual host."""
         pass
 
     @abstractmethod
