@@ -23,8 +23,8 @@ from cezzis_com_bootstrapper.infrastructure.services import (
     IAzureBlobService,
     ICosmosDbService,
     IKafkaService,
-    KafkaService,
     IRabbitMqAdminService,
+    KafkaService,
     RabbitMqAdminService,
 )
 

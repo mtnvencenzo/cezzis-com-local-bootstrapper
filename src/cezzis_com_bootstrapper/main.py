@@ -13,7 +13,7 @@ from cezzis_com_bootstrapper.application.concerns import (
     CreateBlobStorageCommand,
     CreateCosmosDbCommand,
     CreateKafkaCommand,
-    CreateRabbitMqCommand
+    CreateRabbitMqCommand,
 )
 
 sys.excepthook = global_exception_handler

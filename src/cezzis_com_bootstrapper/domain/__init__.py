@@ -8,7 +8,6 @@ from cezzis_com_bootstrapper.domain.config import (
     get_otel_options,
     get_rabbitmq_options,
 )
-
 from cezzis_com_bootstrapper.domain.messaging import (
     RabbitMqBinding,
     RabbitMqBindingType,

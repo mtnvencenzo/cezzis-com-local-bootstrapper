@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
-from typing import Any
 
 from cezzis_com_bootstrapper.domain.messaging.rabbitmq_configuration import RabbitMqConfiguration
 from cezzis_com_bootstrapper.domain.messaging.rabbitmq_queue import RabbitMqQueue
+
 
 class IRabbitMqAdminService(ABC):
     @abstractmethod
@@ -16,7 +16,9 @@ class IRabbitMqAdminService(ABC):
         pass
 
     @abstractmethod
-    async def assign_vhost_permissions(self, vhost: str, username: str, configure: str = ".*", write: str = ".*", read: str = ".*") -> None:
+    async def assign_vhost_permissions(
+        self, vhost: str, username: str, configure: str = ".*", write: str = ".*", read: str = ".*"
+    ) -> None:
         """Assigns permissions to a user for a specific virtual host."""
         pass
 

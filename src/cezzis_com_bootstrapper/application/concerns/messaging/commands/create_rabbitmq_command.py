@@ -1,14 +1,17 @@
 import logging
-from mediatr import Mediator, GenericQuery
+
 from injector import inject
+from mediatr import GenericQuery, Mediator
 
 from cezzis_com_bootstrapper.domain.config.rabbitmq_options import RabbitMqOptions
-from cezzis_com_bootstrapper.domain.messaging.rabbitmq_configuration import RabbitMqConfiguration
 from cezzis_com_bootstrapper.infrastructure.services.irabbitmq_admin_service import IRabbitMqAdminService
+
 
 class CreateRabbitMqCommand(GenericQuery[bool]):
     """Command to initialize RabbitMQ and all infrastructure dependencies."""
+
     pass
+
 
 @Mediator.handler
 class CreateRabbitMqCommandHandler:
@@ -22,7 +25,9 @@ class CreateRabbitMqCommandHandler:
         pass
 
     async def handle(self, request: CreateRabbitMqCommand) -> bool:
-        rabbitmq_configuration = await self.rabbitmq_admin_service.LoadFromFileAsync(self.rabbitmq_options.app_config_file_path)
+        rabbitmq_configuration = await self.rabbitmq_admin_service.LoadFromFileAsync(
+            self.rabbitmq_options.app_config_file_path
+        )
 
         # --------------------------------------------------------
         # Create the vhost
@@ -71,7 +76,6 @@ class CreateRabbitMqCommandHandler:
                     exchange_name=exchange,
                 )
 
-
         # --------------------------------------------------------
         # Create exchanges and remove any not in the configuration
         # --------------------------------------------------------
@@ -88,6 +92,5 @@ class CreateRabbitMqCommandHandler:
                     vhost=self.rabbitmq_options.vhost,
                     queue_name=queue,
                 )
-
 
         return True

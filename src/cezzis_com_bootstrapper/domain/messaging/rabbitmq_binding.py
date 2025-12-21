@@ -3,6 +3,7 @@ from dataclasses import dataclass
 
 from cezzis_com_bootstrapper.domain.messaging.rabbitmq_binding_type import RabbitMqBindingType
 
+
 @dataclass
 class RabbitMqBinding:
     source: str
