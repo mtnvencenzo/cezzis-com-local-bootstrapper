@@ -4,6 +4,7 @@ from cezzis_com_bootstrapper.application.concerns.storage import (
     CreateBlobStorageCommand,
     CreateBlobStorageCommandHandler,
 )
+from cezzis_com_bootstrapper.application.concerns.messaging import CreateRabbitMqCommand, CreateRabbitMqCommandHandler
 
 __all__ = [
     "CreateBlobStorageCommand",
@@ -12,4 +13,6 @@ __all__ = [
     "CreateKafkaCommandHandler",
     "CreateCosmosDbCommand",
     "CreateCosmosDbCommandHandler",
+    "CreateRabbitMqCommand",
+    "CreateRabbitMqCommandHandler",
 ]

@@ -6,6 +6,8 @@ from cezzis_com_bootstrapper.application.concerns import (
     CreateCosmosDbCommandHandler,
     CreateKafkaCommand,
     CreateKafkaCommandHandler,
+    CreateRabbitMqCommand,
+    CreateRabbitMqCommandHandler,
 )
 
 __all__ = [
@@ -16,4 +18,6 @@ __all__ = [
     "CreateKafkaCommandHandler",
     "CreateCosmosDbCommand",
     "CreateCosmosDbCommandHandler",
+    "CreateRabbitMqCommand",
+    "CreateRabbitMqCommandHandler",
 ]

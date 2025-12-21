@@ -22,6 +22,8 @@ dependencies = [
     "confluent-kafka (>=2.12.2,<3.0.0)",
     "azure-cosmos (>=4.14.3,<5.0.0)",
     "aiohttp (>=3.13.2,<4.0.0)",
+    "aiofiles (>=25.1.0,<26.0.0)",
+    "rabbitmq-admin (>=0.2,<0.3)",
 ]
 
 [project.scripts]

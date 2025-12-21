@@ -13,6 +13,7 @@ from cezzis_com_bootstrapper.application.concerns import (
     CreateBlobStorageCommand,
     CreateCosmosDbCommand,
     CreateKafkaCommand,
+    CreateRabbitMqCommand
 )
 
 sys.excepthook = global_exception_handler
@@ -29,6 +30,7 @@ async def main():
     logger.info("Starting Bootstrapper...")
 
     mediator = injector.get(Mediator)
+    await mediator.send_async(CreateRabbitMqCommand())
     await mediator.send_async(CreateBlobStorageCommand())
     await mediator.send_async(CreateKafkaCommand())
     await mediator.send_async(CreateCosmosDbCommand())
