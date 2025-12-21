@@ -193,6 +193,10 @@ class RabbitMqAdminService(IRabbitMqAdminService):
 
     async def create_exchange_if_not_exists(self, vhost: str, exchange_def: RabbitMqExchange) -> None:
         """Creates an exchange in a specific virtual host if it does not already exist."""
+
+        if exchange_def.name.startswith("amq."):
+            raise ValueError(f"Cannot create exchange with reserved name '{exchange_def.name}'.")
+
         existing_exchanges = await self.list_exchanges_in_vhost(vhost=vhost)
 
         for exchange in existing_exchanges:
@@ -221,6 +225,9 @@ class RabbitMqAdminService(IRabbitMqAdminService):
 
     async def delete_exchange_from_vhost(self, vhost: str, exchange_name: str) -> None:
         """Deletes an exchange from a specific virtual host."""
+        if exchange_name.startswith("amq."):
+            raise ValueError(f"Cannot delete exchange with reserved name '{exchange_name}'.")
+
         self.logger.info(
             f"Deleting exchange '{exchange_name}' from vhost '{vhost}'",
             extra={"rabbitmq_exchange": exchange_name, "rabbitmq_vhost": vhost},
