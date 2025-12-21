@@ -1,10 +1,17 @@
 from abc import ABC, abstractmethod
 
+from cezzis_com_bootstrapper.domain.messaging.rabbitmq_binding import RabbitMqBinding
 from cezzis_com_bootstrapper.domain.messaging.rabbitmq_configuration import RabbitMqConfiguration
 from cezzis_com_bootstrapper.domain.messaging.rabbitmq_queue import RabbitMqQueue
 
 
 class IRabbitMqAdminService(ABC):
+    @abstractmethod
+    async def LoadFromFileAsync(self, file_path: str) -> RabbitMqConfiguration:
+        """Loads RabbitMQ configuration from a JSON file."""
+        pass
+
+
     @abstractmethod
     async def create_vhost_if_not_exists(self, vhost: str) -> None:
         """Creates a RabbitMQ virtual host if it does not already exist."""
@@ -68,6 +75,16 @@ class IRabbitMqAdminService(ABC):
         pass
 
     @abstractmethod
-    async def LoadFromFileAsync(self, file_path: str) -> RabbitMqConfiguration:
-        """Loads RabbitMQ configuration from a JSON file."""
+    async def list_bindings_in_vhost(self, vhost: str) -> list[RabbitMqBinding]:
+        """Lists all bindings in a specific virtual host."""
+        pass
+
+    @abstractmethod
+    async def create_binding_if_not_exists(self, vhost: str, binding_def: RabbitMqBinding) -> None:
+        """Creates a binding in a specific virtual host if it does not already exist."""
+        pass
+
+    @abstractmethod
+    async def delete_binding_from_vhost(self, vhost: str, binding_def: RabbitMqBinding) -> None:
+        """Deletes a binding from a specific virtual host."""
         pass

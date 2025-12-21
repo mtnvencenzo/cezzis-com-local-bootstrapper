@@ -22,7 +22,6 @@ class CreateRabbitMqCommandHandler:
         self.rabbitmq_admin_service = rabbitmq_admin_service
         self.rabbitmq_options = rabbitmq_options
         self.logger = logging.getLogger("create_rabbitmq_command_handler")
-        pass
 
     async def handle(self, request: CreateRabbitMqCommand) -> bool:
         rabbitmq_configuration = await self.rabbitmq_admin_service.LoadFromFileAsync(
@@ -77,7 +76,7 @@ class CreateRabbitMqCommandHandler:
                 )
 
         # --------------------------------------------------------
-        # Create exchanges and remove any not in the configuration
+        # Create queues and remove any not in the configuration
         # --------------------------------------------------------
         for queue_def in rabbitmq_configuration.queues:
             await self.rabbitmq_admin_service.create_queue_if_not_exists(
@@ -91,6 +90,23 @@ class CreateRabbitMqCommandHandler:
                 await self.rabbitmq_admin_service.delete_queue_for_vhost(
                     vhost=self.rabbitmq_options.vhost,
                     queue_name=queue,
+                )
+
+        # --------------------------------------------------------
+        # Create bindings and remove any not in the configuration
+        # --------------------------------------------------------
+        for binding_def in rabbitmq_configuration.bindings:
+            await self.rabbitmq_admin_service.create_binding_if_not_exists(
+                vhost=self.rabbitmq_options.vhost,
+                binding_def=binding_def,
+            )
+
+        all_bindings = await self.rabbitmq_admin_service.list_bindings_in_vhost(self.rabbitmq_options.vhost)
+        for binding in all_bindings:
+            if binding not in rabbitmq_configuration.bindings:
+                await self.rabbitmq_admin_service.delete_binding_from_vhost(
+                    vhost=self.rabbitmq_options.vhost,
+                    binding_def=binding,
                 )
 
         return True

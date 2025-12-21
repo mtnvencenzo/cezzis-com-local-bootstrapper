@@ -9,11 +9,14 @@ import requests
 from injector import inject
 from rabbitmq_admin import AdminAPI
 from requests.exceptions import HTTPError
+from dacite import from_dict, Config
 
 from cezzis_com_bootstrapper.domain.config.rabbitmq_options import RabbitMqOptions
 from cezzis_com_bootstrapper.domain.messaging.rabbitmq_binding import RabbitMqBinding
+from cezzis_com_bootstrapper.domain.messaging.rabbitmq_binding_type import RabbitMqBindingType
 from cezzis_com_bootstrapper.domain.messaging.rabbitmq_configuration import RabbitMqConfiguration
 from cezzis_com_bootstrapper.domain.messaging.rabbitmq_exchange import RabbitMqExchange
+from cezzis_com_bootstrapper.domain.messaging.rabbitmq_exchange_type import RabbitMqExchangeType
 from cezzis_com_bootstrapper.domain.messaging.rabbitmq_queue import RabbitMqQueue
 from cezzis_com_bootstrapper.infrastructure.services.irabbitmq_admin_service import IRabbitMqAdminService
 
@@ -30,6 +33,29 @@ class RabbitMqAdminService(IRabbitMqAdminService):
                 rabbitmq_options.admin_password,
             ),
         )
+
+    async def LoadFromFileAsync(self, file_path: str) -> RabbitMqConfiguration:
+        """Loads RabbitMQ configuration from a JSON file."""
+
+        self.logger.info(f"Loading RabbitMQ configuration from {file_path}")
+
+        async with aiofiles.open(file_path, mode="r") as file:
+            logger = logging.getLogger("rabbitmq_configuration_loader")
+            content = await file.read()
+            data = json.loads(content)
+
+            rabbitmq_configuration = from_dict(
+                data_class=RabbitMqConfiguration,
+                data=data,
+                config=Config(
+                    type_hooks={
+                        RabbitMqBindingType: RabbitMqBindingType,
+                        RabbitMqExchangeType: RabbitMqExchangeType,
+                    }
+                ))
+            logger.info(f"Loaded RabbitMQ configuration from {file_path}")
+
+            return rabbitmq_configuration
 
     async def create_vhost_if_not_exists(self, vhost: str) -> None:
         """Creates a RabbitMQ virtual host if it does not already exist."""
@@ -247,24 +273,100 @@ class RabbitMqAdminService(IRabbitMqAdminService):
             path="/api/queues/{0}/{1}".format(urllib.parse.quote_plus(vhost), urllib.parse.quote_plus(queue_name))
         )
 
-    async def LoadFromFileAsync(self, file_path: str) -> RabbitMqConfiguration:
-        """Loads RabbitMQ configuration from a JSON file."""
+    async def list_bindings_in_vhost(self, vhost: str) -> list[RabbitMqBinding]:
+        """Lists all bindings in a specific virtual host."""
+        bindings = self._get("/api/bindings/{0}".format(urllib.parse.quote_plus(vhost)))
 
-        self.logger.info(f"Loading RabbitMQ configuration from {file_path}")
+        binding_list: list[RabbitMqBinding] = []
 
-        async with aiofiles.open(file_path, mode="r") as file:
-            logger = logging.getLogger("rabbitmq_configuration_loader")
-            content = await file.read()
-            data = json.loads(content)
-
-            rabbitmq_configuration = RabbitMqConfiguration(
-                exchanges=[RabbitMqExchange(**ex) for ex in data.get("exchanges", [])],
-                queues=[RabbitMqQueue(**q) for q in data.get("queues", [])],
-                bindings=[RabbitMqBinding(**b) for b in data.get("bindings", [])],
+        for binding in bindings:
+            existing_binding = RabbitMqBinding(
+                source=binding.get("source", ""),
+                destination=binding.get("destination", ""),
+                destination_type=RabbitMqBindingType(binding.get("destination_type", "")),
+                binding_key=binding.get("routing_key", ""),
+                arguments=binding.get("arguments", {})
             )
-            logger.info(f"Loaded RabbitMQ configuration from {file_path}")
 
-            return rabbitmq_configuration
+            if (not existing_binding.source
+                and existing_binding.binding_key == existing_binding.destination
+                and existing_binding.destination_type == RabbitMqBindingType.QUEUE
+            ):
+                # Skip default direct queue bindings
+                continue
+
+            if existing_binding.source and existing_binding.destination:
+                binding_list.append(existing_binding)
+
+        return binding_list
+
+    async def create_binding_if_not_exists(self, vhost: str, binding_def: RabbitMqBinding) -> None:
+        """Creates a binding in a specific virtual host if it does not already exist."""
+
+        if binding_def.destination_type not in [RabbitMqBindingType.QUEUE, RabbitMqBindingType.EXCHANGE]:
+            raise ValueError(f"Invalid destination_type '{binding_def.destination_type}' for binding.")
+
+        existing_bindings = await self.list_bindings_in_vhost(vhost=vhost)
+
+        for binding in existing_bindings:
+            if (
+                binding.source == binding_def.source
+                and binding.destination == binding_def.destination
+                and binding.destination_type == binding_def.destination_type
+                and binding.binding_key == binding_def.binding_key
+            ):
+                self.logger.info(
+                    f"Binding from '{binding_def.source}' to '{binding_def.destination}' already exists in vhost '{vhost}'",
+                    extra={"rabbitmq_vhost": vhost, "rabbitmq_exchange": binding_def.source, "rabbitmq_binding_key": binding_def.binding_key, "rabbitmq_destination": binding_def.destination},
+                )
+                return
+
+        self.logger.info(
+            f"Creating binding from '{binding_def.source}' to '{binding_def.destination}' in vhost '{vhost}'",
+            extra={"rabbitmq_vhost": vhost, "rabbitmq_exchange": binding_def.source, "rabbitmq_binding_key": binding_def.binding_key, "rabbitmq_destination": binding_def.destination},
+        )
+
+        self._post(
+            path="/api/bindings/{0}/e/{1}/{2}/{3}".format(
+                urllib.parse.quote_plus(vhost),
+                urllib.parse.quote_plus(binding_def.source),
+                binding_def.destination_type.value[0],
+                urllib.parse.quote_plus(binding_def.destination),
+            ),
+            data={
+                "routing_key": binding_def.binding_key,
+                "arguments": binding_def.arguments,
+            },
+        )
+
+    async def delete_binding_from_vhost(self, vhost: str, binding_def: RabbitMqBinding) -> None:
+        """Deletes a binding from a specific virtual host."""
+        self.logger.info(
+            f"Deleting binding from '{binding_def.source}' to '{binding_def.destination}' in vhost '{vhost}'",
+            extra={"rabbitmq_vhost": vhost, "rabbitmq_exchange": binding_def.source, "rabbitmq_binding_key": binding_def.binding_key, "rabbitmq_destination": binding_def.destination},
+        )
+
+        bindings = self._get(
+            "/api/bindings/{0}/e/{1}/{2}/{3}".format(
+                urllib.parse.quote_plus(vhost),
+                urllib.parse.quote_plus(binding_def.source),
+                binding_def.destination_type.value[0],
+                urllib.parse.quote_plus(binding_def.destination),
+            )
+        )
+
+        for binding in bindings:
+            if binding.get("routing_key", "") == binding_def.binding_key:
+                self._delete(
+                    path="/api/bindings/{0}/e/{1}/{2}/{3}/{4}".format(
+                        urllib.parse.quote_plus(vhost),
+                        urllib.parse.quote_plus(binding_def.source),
+                        binding_def.destination_type.value[0],
+                        urllib.parse.quote_plus(binding_def.destination),
+                        str(binding.get("properties_key", "")),
+                    )
+                )
+                return
 
     def _get(self, path: str):
         """
@@ -296,6 +398,22 @@ class RabbitMqAdminService(IRabbitMqAdminService):
         kwargs["data"] = json.dumps(data)
 
         response = requests.put(**kwargs)
+        response.raise_for_status()
+
+    def _post(self, path: str, data: dict):
+        """
+        A wrapper for putting things to the RabbitMQ Management HTTP API.
+        """
+        kwargs = {"url": self.admin_client.url + path}
+        kwargs["auth"] = self.admin_client.auth
+
+        headers = deepcopy(self.admin_client.headers)
+        headers.update(kwargs.get("headers", {}))
+        kwargs["headers"] = headers
+
+        kwargs["data"] = json.dumps(data)
+
+        response = requests.post(**kwargs)
         response.raise_for_status()
 
     def _delete(self, path: str):
