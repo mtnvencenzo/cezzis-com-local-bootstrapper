@@ -1,3 +1,4 @@
+import asyncio
 import json
 import logging
 import urllib.parse
@@ -65,7 +66,7 @@ class RabbitMqAdminService(IRabbitMqAdminService):
 
         try:
             self.logger.info(f"Checking if RabbitMQ vhost '{vhost}' exists", extra={"rabbitmq_vhost": vhost})
-            existing_vhost = self.admin_client.get_vhost(name=vhost)
+            existing_vhost = await asyncio.to_thread(self.admin_client.get_vhost, name=vhost)
         except HTTPError as e:
             if e.response.status_code == 404:
                 self.logger.info(f"RabbitMQ vhost '{vhost}' does not exist", extra={"rabbitmq_vhost": vhost})
@@ -75,7 +76,7 @@ class RabbitMqAdminService(IRabbitMqAdminService):
 
         if existing_vhost is None:
             self.logger.info(f"Creating RabbitMQ vhost '{vhost}'", extra={"rabbitmq_vhost": vhost})
-            self.admin_client.create_vhost(name=vhost)
+            await asyncio.to_thread(self.admin_client.create_vhost, name=vhost)
         else:
             self.logger.info(f"RabbitMQ vhost '{vhost}' already exists", extra={"rabbitmq_vhost": vhost})
 
@@ -85,7 +86,7 @@ class RabbitMqAdminService(IRabbitMqAdminService):
 
         try:
             self.logger.info(f"Checking if RabbitMQ user '{username}' exists", extra={"rabbitmq_user": username})
-            existing_user = self.admin_client.get_user(name=username)
+            existing_user = await asyncio.to_thread(self.admin_client.get_user, name=username)
         except HTTPError as e:
             if e.response.status_code == 404:
                 self.logger.info(f"RabbitMQ user '{username}' does not exist", extra={"rabbitmq_user": username})
@@ -95,7 +96,7 @@ class RabbitMqAdminService(IRabbitMqAdminService):
 
         if existing_user is None:
             self.logger.info(f"Creating RabbitMQ user '{username}'", extra={"rabbitmq_user": username})
-            self.admin_client.create_user(name=username, password=password, tags=tags)
+            await asyncio.to_thread(self.admin_client.create_user, name=username, password=password, tags=tags)
         else:
             self.logger.info(f"RabbitMQ user '{username}' already exists", extra={"rabbitmq_user": username})
 
@@ -115,7 +116,9 @@ class RabbitMqAdminService(IRabbitMqAdminService):
                 f"Checking for existing permissions for user '{username}' on vhost '{vhost}'",
                 extra={"rabbitmq_user": username, "rabbitmq_vhost": vhost},
             )
-            existing_user_permissions = self.admin_client.get_user_permission(name=username, vhost=vhost)
+            existing_user_permissions = await asyncio.to_thread(
+                self.admin_client.get_user_permission, name=username, vhost=vhost
+            )
         except HTTPError as e:
             if e.response.status_code == 404:
                 self.logger.info(
@@ -147,21 +150,26 @@ class RabbitMqAdminService(IRabbitMqAdminService):
                 f"Deleting existing permissions for user '{username}' on vhost '{vhost}'",
                 extra={"rabbitmq_user": username, "rabbitmq_vhost": vhost},
             )
-            self.admin_client.delete_user_permission(name=username, vhost=vhost)
+            await asyncio.to_thread(self.admin_client.delete_user_permission, name=username, vhost=vhost)
 
-        self.admin_client.create_user_permission(
-            name=username, vhost=vhost, configure=configure, write=write, read=read
+        await asyncio.to_thread(
+            self.admin_client.create_user_permission,
+            name=username,
+            vhost=vhost,
+            configure=configure,
+            write=write,
+            read=read,
         )
 
     async def list_vhost_users(self, vhost: str) -> list[str]:
         """Lists all RabbitMQ users for a specific virtual host."""
-        existing_users = self.admin_client.list_users()
+        existing_users = await asyncio.to_thread(self.admin_client.list_users)
 
         vhost_users: list[str] = []
 
         for user in existing_users:
             if user["name"] != self.rabbitmq_options.admin_username:
-                user_permissions = self.admin_client.list_user_permissions(name=user["name"])
+                user_permissions = await asyncio.to_thread(self.admin_client.list_user_permissions, name=user["name"])
                 for perm in user_permissions:
                     if perm["vhost"] == vhost:
                         vhost_users.append(user["name"])
@@ -171,11 +179,11 @@ class RabbitMqAdminService(IRabbitMqAdminService):
 
     async def delete_user_from_vhost(self, vhost: str, username: str) -> None:
         """Deletes a RabbitMQ user from a specific virtual host."""
-        self.admin_client.delete_user(name=username)
+        await asyncio.to_thread(self.admin_client.delete_user, name=username)
 
     async def list_exchanges_in_vhost(self, vhost: str) -> list[str]:
         """Lists all exchanges in a specific virtual host, excluding those starting with 'amq.' and empty names."""
-        exchanges = self.admin_client.list_exchanges_for_vhost(vhost=vhost)
+        exchanges = await asyncio.to_thread(self.admin_client.list_exchanges_for_vhost, vhost=vhost)
         filtered = []
         for exchange in exchanges:
             name = exchange.get("name", "")
@@ -200,7 +208,8 @@ class RabbitMqAdminService(IRabbitMqAdminService):
             f"Creating exchange '{exchange_def.name}' in vhost '{vhost}'",
             extra={"rabbitmq_exchange": exchange_def.name, "rabbitmq_vhost": vhost},
         )
-        self.admin_client.create_exchange_for_vhost(
+        await asyncio.to_thread(
+            self.admin_client.create_exchange_for_vhost,
             exchange=exchange_def.name,
             vhost=vhost,
             body={
@@ -217,7 +226,8 @@ class RabbitMqAdminService(IRabbitMqAdminService):
             f"Deleting exchange '{exchange_name}' from vhost '{vhost}'",
             extra={"rabbitmq_exchange": exchange_name, "rabbitmq_vhost": vhost},
         )
-        self.admin_client.delete_exchange_for_vhost(
+        await asyncio.to_thread(
+            self.admin_client.delete_exchange_for_vhost,
             exchange=exchange_name,
             vhost=vhost,
         )

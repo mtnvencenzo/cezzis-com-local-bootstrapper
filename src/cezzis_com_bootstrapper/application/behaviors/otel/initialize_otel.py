@@ -5,6 +5,7 @@ import socket
 from importlib.metadata import version
 
 from cezzis_otel import OTelSettings, initialize_otel, shutdown_otel
+from opentelemetry.instrumentation.aiohttp_client import AioHttpClientInstrumentor
 from opentelemetry.instrumentation.confluent_kafka import (  # type: ignore
     ConfluentKafkaInstrumentor,
 )
@@ -39,6 +40,7 @@ def initialize_opentelemetry() -> None:
             ConfluentKafkaInstrumentor().instrument(),
             RequestsInstrumentor().instrument(),
             HTTPXClientInstrumentor().instrument(),
+            AioHttpClientInstrumentor().instrument(),
             None,
         )[-1],
     )
