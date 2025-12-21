@@ -59,10 +59,7 @@ class CreateRabbitMqCommandHandler:
         for user in vhost_users:
             if user != self.rabbitmq_options.app_username:
                 self.logger.info(f"Deleting extraneous user '{user}' from vhost '{self.rabbitmq_options.vhost}'")
-                await self.rabbitmq_admin_service.delete_user_from_vhost(
-                    vhost=self.rabbitmq_options.vhost,
-                    username=user,
-                )
+                await self.rabbitmq_admin_service.delete_user(username=user)
 
         # --------------------------------------------------------
         # Create exchanges and remove any not in the configuration
