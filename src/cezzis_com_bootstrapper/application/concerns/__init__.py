@@ -1,4 +1,9 @@
-from cezzis_com_bootstrapper.application.concerns.data import CreateCosmosDbCommand, CreateCosmosDbCommandHandler
+from cezzis_com_bootstrapper.application.concerns.data import (
+    CreateCosmosDbCommand,
+    CreateCosmosDbCommandHandler,
+    CreateQdrantCommand,
+    CreateQdrantCommandHandler,
+)
 from cezzis_com_bootstrapper.application.concerns.eventing import CreateKafkaCommand, CreateKafkaCommandHandler
 from cezzis_com_bootstrapper.application.concerns.messaging import CreateRabbitMqCommand, CreateRabbitMqCommandHandler
 from cezzis_com_bootstrapper.application.concerns.storage import (
@@ -15,4 +20,6 @@ __all__ = [
     "CreateCosmosDbCommandHandler",
     "CreateRabbitMqCommand",
     "CreateRabbitMqCommandHandler",
+    "CreateQdrantCommand",
+    "CreateQdrantCommandHandler",
 ]

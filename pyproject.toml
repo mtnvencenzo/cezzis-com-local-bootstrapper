@@ -26,6 +26,7 @@ dependencies = [
     "rabbitmq-admin (>=0.2,<0.3)",
     "dacite (>=1.9.2,<2.0.0)",
     "opentelemetry-instrumentation-aiohttp-client (==0.59b0)",
+    "qdrant-client (>=1.16.2,<2.0.0)",
 ]
 
 [project.scripts]
