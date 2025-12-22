@@ -3,8 +3,10 @@ from cezzis_com_bootstrapper.infrastructure.services.cosmosdb_service import Cos
 from cezzis_com_bootstrapper.infrastructure.services.iazure_blob_service import IAzureBlobService
 from cezzis_com_bootstrapper.infrastructure.services.icosmosdb_service import ICosmosDbService
 from cezzis_com_bootstrapper.infrastructure.services.ikafka_service import IKafkaService
+from cezzis_com_bootstrapper.infrastructure.services.iqdrant_service import IQdrantService
 from cezzis_com_bootstrapper.infrastructure.services.irabbitmq_admin_service import IRabbitMqAdminService
 from cezzis_com_bootstrapper.infrastructure.services.kafka_service import KafkaService
+from cezzis_com_bootstrapper.infrastructure.services.qdrant_service import QdrantService
 from cezzis_com_bootstrapper.infrastructure.services.rabbitmq_admin_service import RabbitMqAdminService
 
 __all__ = [
@@ -16,4 +18,6 @@ __all__ = [
     "CosmosDbService",
     "IRabbitMqAdminService",
     "RabbitMqAdminService",
+    "IQdrantService",
+    "QdrantService",
 ]
