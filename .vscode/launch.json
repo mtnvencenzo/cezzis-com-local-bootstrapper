@@ -10,7 +10,7 @@
                 "python": "${workspaceFolder}/.venv/bin/python",
                 "cwd": "${workspaceFolder}/src/cezzis_com_bootstrapper",
                 "env": {
-                    "ENV": "local"
+                    "ENV": "loc"
                 }
             }
         ]
