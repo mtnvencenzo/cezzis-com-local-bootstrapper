@@ -32,14 +32,21 @@ class QdrantService(IQdrantService):
                     "vector_size": vector_size,
                 },
             )
+
             await asyncio.to_thread(
                 self.qdrant_client.create_collection,
                 collection_name=collection_name,
-                vectors_config=models.VectorParams(
-                    size=vector_size,
-                    distance=models.Distance.COSINE,
-                ),
+                vectors_config={
+                    "dense": models.VectorParams(
+                        size=vector_size,
+                        distance=models.Distance.COSINE,
+                    ),
+                },
+                sparse_vectors_config={
+                    "sparse": models.SparseVectorParams(),
+                },
             )
+
             self.logger.info(
                 f"Collection '{collection_name}' created.",
                 extra={
