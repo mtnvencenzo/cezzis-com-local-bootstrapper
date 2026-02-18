@@ -11,7 +11,6 @@ from cezzis_com_bootstrapper.application.behaviors.exception_handling.global_exc
 )
 from cezzis_com_bootstrapper.application.concerns import (
     CreateBlobStorageCommand,
-    CreateCosmosDbCommand,
     CreateKafkaCommand,
     CreateQdrantCommand,
     CreateRabbitMqCommand,
@@ -35,7 +34,7 @@ async def main():
     await mediator.send_async(CreateRabbitMqCommand())
     await mediator.send_async(CreateBlobStorageCommand())
     await mediator.send_async(CreateKafkaCommand())
-    await mediator.send_async(CreateCosmosDbCommand())
+    # await mediator.send_async(CreateCosmosDbCommand())
 
     logger.info("Bootstrapping completed successfully")
 

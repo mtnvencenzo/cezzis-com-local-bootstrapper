@@ -1,0 +1,34 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: cezzis-com-local-bootstrapper
+  namespace: cezzis
+  labels:
+    app: cezzis-com-local-bootstrapper
+    app.kubernetes.io/part-of: cezzis
+    app.kubernetes.io/managed-by: argocd
+spec:
+  template:
+    metadata:
+      labels:
+        app: cezzis-com-local-bootstrapper
+        app.kubernetes.io/part-of: cezzis
+        app.kubernetes.io/managed-by: argocd
+    spec:
+      containers:
+        - name: cezzis-com-local-bootstrapper
+          image: acrveceusgloshared001.azurecr.io/cezziscombootstrapper:latest
+          envFrom:
+            - configMapRef:
+                name: cezzis-com-local-bootstrapper-config
+          volumeMounts:
+            - name: rabbitmq-config
+              mountPath: /config/rabbitmq.json
+              subPath: rabbitmq.json
+              readOnly: true
+      volumes:
+        - name: rabbitmq-config
+          hostPath:
+            path: /home/mtnvencenzo/Github/cezzis-com-local-bootstrapper/rabbitmq.json
+            type: File
+      restartPolicy: Never

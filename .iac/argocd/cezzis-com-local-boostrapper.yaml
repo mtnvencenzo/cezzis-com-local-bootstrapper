@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cezzis-com-local-bootstrapper
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/mtnvencenzo/cezzis-com-local-bootstrapper.git'
+    targetRevision: main
+    path: .iac/k8s
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: cezzis
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
