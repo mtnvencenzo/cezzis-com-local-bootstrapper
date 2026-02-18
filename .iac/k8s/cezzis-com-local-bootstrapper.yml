@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: cezzis-com-local-bootstrapper
-          image: acrveceusgloshared001.azurecr.io/cezziscombootstrapper:latest
+          image: acrveceusgloshared001.azurecr.io/cezziscombootstrapper:0.0.20
           envFrom:
             - configMapRef:
                 name: cezzis-com-local-bootstrapper-config
