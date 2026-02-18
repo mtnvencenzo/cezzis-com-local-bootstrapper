@@ -74,33 +74,6 @@ jobs:
       acr_registry_login_username: ${{ secrets.ACR_REGISTRY_USERNAME }}
       acr_registry_login_password: ${{ secrets.ACR_REGISTRY_PASSWORD }}
 
-  deploy:
-    permissions:
-      contents: write
-
-    name: Deploy
-    needs: [docker]
-    runs-on: ubuntu-latest
-    environment: prd
-    env:
-      MANIFEST_PATH: .iac/k8s/cezzis-com-local-bootstrapper.yml
-      IMAGE_REPO: acrveceusgloshared001.azurecr.io/cezziscombootstrapper
-
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v6
-        with: 
-          fetch-depth: 0
-
-      - name: Update k8s manifest
-        run: |
-          sed -i "s#image: $IMAGE_REPO:.*#image: $IMAGE_REPO:${{ needs.gitVersion.outputs.semVer }}#" $MANIFEST_PATH
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git config --global user.name "github-actions[bot]"
-          git add .iac/k8s/cezzis-com-local-bootstrapper.yml
-          git commit -m "Update image tag to ${{ needs.gitVersion.outputs.semVer }} for deployment"
-          git push
-
   create_release_prd:
     name: Create release
     if: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref_name == 'main' }}
