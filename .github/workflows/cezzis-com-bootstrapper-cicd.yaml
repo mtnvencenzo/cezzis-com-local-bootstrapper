@@ -81,6 +81,7 @@ jobs:
     name: Deploy
     needs: [docker]
     runs-on: ubuntu-latest
+    environment: prd
     env:
       MANIFEST_PATH: .iac/k8s/cezzis-com-local-bootstrapper.yml
       IMAGE_REPO: acrveceusgloshared001.azurecr.io/cezziscombootstrapper
