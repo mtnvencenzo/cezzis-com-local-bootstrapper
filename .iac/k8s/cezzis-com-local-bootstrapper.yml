@@ -28,7 +28,6 @@ spec:
               readOnly: true
       volumes:
         - name: rabbitmq-config
-          hostPath:
-            path: /home/mtnvencenzo/Github/cezzis-com-local-bootstrapper/rabbitmq.json
-            type: File
+          configMap:
+            name: rabbitmq-config
       restartPolicy: Never
