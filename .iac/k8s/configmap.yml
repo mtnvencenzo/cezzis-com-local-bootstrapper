@@ -32,7 +32,7 @@ data:
   COSMOSDB_ACCOUNT_ENDPOINT: "https://cosmosdb.azure-platform.svc.cluster.local:8081/"
   COSMOSDB_COCKTAILS_DATABASE_NAME: "cocktails-db-prd"
   COSMOSDB_COCKTAILS_CONTAINER_DEFS: "cezzis-cocktails-cocktail:/id,cezzis-cocktails-ingredient:/id,cezzis-device-auth:/id"
-  OTEL_EXPORTER_OTLP_ENDPOINT: "http://otel-collector.elastic-platform.svc.cluster.local:4318"
+  OTEL_EXPORTER_OTLP_ENDPOINT: "http://otel-collector.openobserve-platform.svc.cluster.local:4318"
   OTEL_SERVICE_NAME: "cezzis-com-bootstrapper"
   OTEL_SERVICE_NAMESPACE: "cezzis"
   RABBITMQ_VHOST: "cezzis-prd"
