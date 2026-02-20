@@ -23,6 +23,8 @@ spec:
           envFrom:
             - configMapRef:
                 name: cezzis-com-local-bootstrapper-config
+            - secretRef:
+                name: cezzis-com-local-bootstrapper-secrets
           volumeMounts:
             - name: rabbitmq-config
               mountPath: /config/rabbitmq.json

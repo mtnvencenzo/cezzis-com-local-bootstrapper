@@ -3,6 +3,9 @@ kind: ConfigMap
 metadata:
   name: rabbitmq-config
   namespace: cezzis
+  labels:
+    app.kubernetes.io/part-of: cezzis
+    app.kubernetes.io/managed-by: argocd
 data:
   rabbitmq.json: |
     {
