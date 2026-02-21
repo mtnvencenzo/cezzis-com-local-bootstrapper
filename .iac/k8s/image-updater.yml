@@ -8,6 +8,7 @@ spec:
   namespace: argocd
   applicationRefs:
     - namePattern: "cezzis-com-local-bootstrapper"
+      setAlias: true 
       commonUpdateSettings:
         updateStrategy: "semver"
         versionConstraint: "0.x"
