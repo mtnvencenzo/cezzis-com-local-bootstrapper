@@ -22,7 +22,16 @@ spec:
       - CreateNamespace=true
       - Replace=true
   ignoreDifferences:
+    # 1. Ignore the image tag updates on your Job
     - group: ""
       kind: Job
       jsonPointers:
         - /spec/template/spec/containers/0/image
+    
+    # 2. Ignore the structural normalization on your ImageUpdater
+    - group: argocd-image-updater.argoproj.io
+      kind: ImageUpdater
+      jsonPointers:
+        - /spec/useAnnotations
+        - /spec/applicationRefs/0/useAnnotations
+        - /spec/applicationRefs/0/commonUpdateSettings/forceUpdate
