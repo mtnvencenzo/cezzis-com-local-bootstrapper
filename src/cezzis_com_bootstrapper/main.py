@@ -47,5 +47,6 @@ def main_entry():
     finally:
         logger.info("Application shutdown complete.")
 
+
 if __name__ == "__main__":
     main_entry()
