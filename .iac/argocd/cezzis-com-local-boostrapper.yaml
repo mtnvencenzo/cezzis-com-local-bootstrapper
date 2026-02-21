@@ -32,6 +32,4 @@ spec:
     - group: argocd-image-updater.argoproj.io
       kind: ImageUpdater
       jsonPointers:
-        - /spec/useAnnotations
-        - /spec/applicationRefs/0/useAnnotations
-        - /spec/applicationRefs/0/commonUpdateSettings/forceUpdate
+        - /spec
