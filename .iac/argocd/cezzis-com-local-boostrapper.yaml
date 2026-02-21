@@ -23,23 +23,17 @@ spec:
       - Replace=true
       - RespectIgnoreDifferences=true
   ignoreDifferences:
-    # 1. Ignore the image tag updates on your Job
+    # 1. Ignore image tag updates on your Job
     - group: ""
       kind: Job
       jsonPointers:
         - /spec/template/spec/containers/0/image
     
-    # 2. Ignore the structural normalization on your ImageUpdater
+    # 2. Fully ignore the ImageUpdater's dynamic internal state
     - group: argocd-image-updater.argoproj.io
       kind: ImageUpdater
       name: cezzis-com-local-bootstrapper-updater
       namespace: cezzis
-      jqPathExpressions:
-        # Ignore where you have it in Git
-        - .spec.useAnnotations
-        # Ignore where the controller moved it in the Cluster
-        - .spec.applicationRefs[].useAnnotations
-        # Ignore the injected default
-        - .spec.applicationRefs[].commonUpdateSettings.forceUpdate
-        # Ignore the field that disappeared in the Cluster
-        - .spec.applicationRefs[].commonUpdateSettings.versionConstraint
+      jsonPointers:
+        - /spec # Ignores all structural shifts (versionConstraint, useAnnotations, etc.)
+        - /metadata/finalizers # Ignores the resources-finalizer added by the controller
