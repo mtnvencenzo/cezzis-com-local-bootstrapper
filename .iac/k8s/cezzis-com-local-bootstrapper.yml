@@ -8,6 +8,8 @@ metadata:
     argocd.argoproj.io/hook: Sync
     # This deletes the old job automatically so the new one can start
     argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
+    # Forces a re-run even if the manifest looks the same
+    argocd.argoproj.io/sync-options: Replace=true
   labels:
     app: cezzis-com-local-bootstrapper
     app.kubernetes.io/part-of: cezzis

@@ -24,13 +24,6 @@ spec:
       - RespectIgnoreDifferences=true
       - ApplyOutOfSyncOnly=false
   ignoreDifferences:
-    # 1. Ignore image tag updates on your Job
-    - group: ""
-      kind: Job
-      jsonPointers:
-        - /spec/template/spec/containers/0/image
-    
-    # 2. Fully ignore the ImageUpdater's dynamic internal state
     - group: argocd-image-updater.argoproj.io
       kind: ImageUpdater
       name: cezzis-com-local-bootstrapper-updater
