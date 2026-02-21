@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ImageUpdateAutomation
+metadata:
+  name: cezzis-com-local-bootstrapper
+  namespace: argocd
+  labels:
+    app.kubernetes.io/part-of: cezzis
+spec:
+  interval: 1m
+  update:
+    strategy: semver
+    semverConstraint: "0.x"
+    writeBackMethod: argocd
+  images:
+    - name: acrveceusgloshared001.azurecr.io/cezziscombootstrapper
+      applicationRef:
+        name: cezzis-com-local-bootstrapper
+        namespace: argocd
+      kustomize:
+        imageName: acrveceusgloshared001.azurecr.io/cezziscombootstrapper

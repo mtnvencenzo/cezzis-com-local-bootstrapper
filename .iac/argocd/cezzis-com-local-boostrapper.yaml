@@ -3,12 +3,8 @@ kind: Application
 metadata:
   name: cezzis-com-local-bootstrapper
   namespace: argocd
-  annotations:
-    argocd-image-updater.argoproj.io/image-list: bootstrapper=acrveceusgloshared001.azurecr.io/cezziscombootstrapper
-    argocd-image-updater.argoproj.io/bootstrapper.kustomize.image-name: acrveceusgloshared001.azurecr.io/cezziscombootstrapper
-    argocd-image-updater.argoproj.io/bootstrapper.update-strategy: semver
-    argocd-image-updater.argoproj.io/bootstrapper.semver-constraint: "0.x"
-    argocd-image-updater.argoproj.io/write-back-method: argocd
+  labels:
+    app.kubernetes.io/part-of: cezzis
 spec:
   project: default
   source:
