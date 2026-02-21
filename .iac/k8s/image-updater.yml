@@ -4,14 +4,16 @@ metadata:
   name: cezzis-com-local-bootstrapper-updater
   namespace: cezzis
 spec:
+  useAnnotations: false 
   namespace: argocd
   applicationRefs:
     - namePattern: "cezzis-com-local-bootstrapper"
+      commonUpdateSettings:
+        updateStrategy: "semver"
+        versionConstraint: "0.x"
+        pullSecret: "pullsecret:argocd/acr-pull-secret"
       images:
         - imageName: "acrveceusgloshared001.azurecr.io/cezziscombootstrapper"
           alias: "cezziscombootstrapper"
-          updateStrategy: "semver"
-          versionConstraint: "0.x"
-          pullSecret: "pullsecret:cezzis/acr-pull-secret"
   writeBackConfig:
     method: argocd
