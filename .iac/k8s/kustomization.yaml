@@ -6,4 +6,4 @@ resources:
   - configmap.yml
   - rabbitmq-configmap.yml
   - cezzis-com-local-bootstrapper.yml
-  - image-update-automation.yml
+  - image-updater.yml
