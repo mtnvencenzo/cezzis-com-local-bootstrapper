@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ImageUpdateAutomation
 metadata:
-  name: cezzis-com-local-bootstrapper
+  name: iua-cezzis-com-local-bootstrapper
   namespace: argocd
   labels:
     app.kubernetes.io/part-of: cezzis
@@ -15,6 +15,6 @@ spec:
     - name: acrveceusgloshared001.azurecr.io/cezziscombootstrapper
       applicationRef:
         name: cezzis-com-local-bootstrapper
-        namespace: argocd
+        namespace: cezzis
       kustomize:
         imageName: acrveceusgloshared001.azurecr.io/cezziscombootstrapper
