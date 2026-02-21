@@ -16,6 +16,6 @@ spec:
         - imageName: "acrveceusgloshared001.azurecr.io/cezziscombootstrapper"
           alias: "cezziscombootstrapper"
           kustomize:
-            imageName: "acrveceusgloshared001.azurecr.io/cezziscombootstrapper"
+            imageAlias: "acrveceusgloshared001.azurecr.io/cezziscombootstrapper"
   writeBackConfig:
     method: argocd

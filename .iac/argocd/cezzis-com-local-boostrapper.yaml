@@ -28,6 +28,8 @@ spec:
       kind: ImageUpdater
       name: cezzis-com-local-bootstrapper-updater
       namespace: cezzis
-      jsonPointers:
-        - /spec # Ignores all structural shifts (versionConstraint, useAnnotations, etc.)
-        - /metadata/finalizers # Ignores the resources-finalizer added by the controller
+      jqPathExpressions:
+        - .spec.useAnnotations
+        - .spec.applicationRefs[].useAnnotations
+        - .spec.applicationRefs[].commonUpdateSettings.forceUpdate
+        - .spec.applicationRefs[].commonUpdateSettings.versionConstraint
