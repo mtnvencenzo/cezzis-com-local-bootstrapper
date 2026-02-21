@@ -3,14 +3,12 @@ name: cicd-cezzis-com-bootstrapper
 on:
   pull_request:
     branches: [main]
-    paths:
-      - '**'
-      - .github/workflows/cezzis-com-bootstrapper-cicd.yaml
+    paths-ignore:
+      - '.iac/k8s/.argocd-source-cezzis-com-local-bootstrapper.yaml'
   push:
     branches: [main]
-    paths:
-      - '**'
-      - .github/workflows/cezzis-com-bootstrapper-cicd.yaml
+    paths-ignore:
+      - '.iac/k8s/.argocd-source-cezzis-com-local-bootstrapper.yaml'
 
   workflow_dispatch:
 
