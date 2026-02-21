@@ -8,7 +8,6 @@ spec:
   namespace: argocd
   applicationRefs:
     - namePattern: "cezzis-com-local-bootstrapper"
-      setAlias: true 
       commonUpdateSettings:
         updateStrategy: "semver"
         versionConstraint: "0.x"
@@ -19,4 +18,7 @@ spec:
           kustomize:
             imageAlias: "acrveceusgloshared001.azurecr.io/cezziscombootstrapper"
   writeBackConfig:
-    method: argocd
+    method: "git:secret:argocd/git-creds"
+    git:
+      branch: main
+      writeBackTarget: kustomization

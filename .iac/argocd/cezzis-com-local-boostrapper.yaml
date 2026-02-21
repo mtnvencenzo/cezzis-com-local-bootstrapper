@@ -34,4 +34,3 @@ spec:
         - .spec.applicationRefs[].commonUpdateSettings.forceUpdate
         - .spec.applicationRefs[].commonUpdateSettings.versionConstraint
         - .spec.applicationRefs[].images[].kustomize
-        - .spec.applicationRefs[].setAlias
