@@ -11,7 +11,6 @@ class RabbitMqOptions(BaseSettings):
     Attributes:
         vhost (str): The virtual host name for RabbitMQ.
         host (str): RabbitMQ server host.
-        port (int): RabbitMQ server port.
         admin_port (int): RabbitMQ management plugin port.
         admin_username (str): RabbitMQ administrator username.
         admin_password (str): RabbitMQ administrator password.
@@ -26,7 +25,6 @@ class RabbitMqOptions(BaseSettings):
 
     vhost: str = Field(default="", validation_alias="RABBITMQ_VHOST")
     host: str = Field(default="", validation_alias="RABBITMQ_HOST")
-    port: int = Field(default=0, validation_alias="RABBITMQ_PORT")
     admin_port: int = Field(default=0, validation_alias="RABBITMQ_ADMIN_PORT")
     admin_username: str = Field(default="", validation_alias="RABBITMQ_ADMIN_USERNAME")
     admin_password: str = Field(default="", validation_alias="RABBITMQ_ADMIN_PASSWORD")
@@ -55,8 +53,6 @@ def get_rabbitmq_options() -> RabbitMqOptions:
             raise ValueError("RABBITMQ_VHOST is required but not set.")
         if not _rabbitmq_options.host:
             raise ValueError("RABBITMQ_HOST is required but not set.")
-        if not _rabbitmq_options.port:
-            raise ValueError("RABBITMQ_PORT is required but not set.")
         if not _rabbitmq_options.admin_port:
             raise ValueError("RABBITMQ_ADMIN_PORT is required but not set.")
         if not _rabbitmq_options.admin_username:

@@ -37,7 +37,6 @@ data:
   OTEL_SERVICE_NAMESPACE: "cezzis"
   RABBITMQ_VHOST: "cezzis-prd"
   RABBITMQ_HOST: "http://rabbitmq.rabbitmq-platform.svc.cluster.local"
-  RABBITMQ_PORT: "5671"
   RABBITMQ_ADMIN_PORT: "15672"
   RABBITMQ_ADMIN_USERNAME: "admin"
   RABBITMQ_APP_USERNAME: "cezzis-app-user-prd"
