@@ -23,6 +23,7 @@ spec:
       - Replace=true
       - RespectIgnoreDifferences=true
       - ApplyOutOfSyncOnly=false
+      - PruneLast=true
   ignoreDifferences:
     - group: argocd-image-updater.argoproj.io
       kind: ImageUpdater
