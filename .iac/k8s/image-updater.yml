@@ -6,15 +6,12 @@ metadata:
 spec:
   namespace: argocd
   applicationRefs:
-    # This must match the 'metadata.name' of your Argo CD Application
     - namePattern: "cezzis-com-local-bootstrapper"
-  images:
-    - imageName: "acrveceusgloshared001.azurecr.io/cezziscombootstrapper"
-      alias: "cezziscombootstrapper"
-      updateStrategy: "semver"
-      versionConstraint: "0.x"
-      # For generic secrets, use 'secret:namespace/name#field'
-      # Note: ImageUpdater expects 'username:password' in a single field
-      pullSecret: "secret:argocd/acr-admin-creds#creds"
+      images:
+        - imageName: "acrveceusgloshared001.azurecr.io/cezziscombootstrapper"
+          alias: "cezziscombootstrapper"
+          updateStrategy: "semver"
+          versionConstraint: "0.x"
+          pullSecret: "secret:argocd/acr-admin-creds#creds"
   writeBackConfig:
     method: argocd
