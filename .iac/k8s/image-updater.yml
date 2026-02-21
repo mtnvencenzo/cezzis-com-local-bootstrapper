@@ -12,6 +12,6 @@ spec:
           alias: "cezziscombootstrapper"
           updateStrategy: "semver"
           versionConstraint: "0.x"
-          pullSecret: "secret:argocd/acr-admin-creds#creds"
+          pullSecret: "pullsecret:cezzis/acr-pull-secret"
   writeBackConfig:
     method: argocd
