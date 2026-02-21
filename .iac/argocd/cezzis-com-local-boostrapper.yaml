@@ -21,6 +21,7 @@ spec:
     syncOptions:
       - CreateNamespace=true
       - Replace=true
+      - RespectIgnoreDifferences=true
   ignoreDifferences:
     # 1. Ignore the image tag updates on your Job
     - group: ""
@@ -31,12 +32,14 @@ spec:
     # 2. Ignore the structural normalization on your ImageUpdater
     - group: argocd-image-updater.argoproj.io
       kind: ImageUpdater
+      name: cezzis-com-local-bootstrapper-updater
       namespace: cezzis
       jqPathExpressions:
-        # Ignore useAnnotations regardless of where it is in the spec
+        # Ignore where you have it in Git
         - .spec.useAnnotations
+        # Ignore where the controller moved it in the Cluster
         - .spec.applicationRefs[].useAnnotations
-        # Ignore injected defaults in the common settings
+        # Ignore the injected default
         - .spec.applicationRefs[].commonUpdateSettings.forceUpdate
-        # Ignore the versionConstraint because the controller often consumes/clears it
+        # Ignore the field that disappeared in the Cluster
         - .spec.applicationRefs[].commonUpdateSettings.versionConstraint
