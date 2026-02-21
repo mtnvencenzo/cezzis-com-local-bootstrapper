@@ -33,3 +33,4 @@ spec:
         - .spec.applicationRefs[].useAnnotations
         - .spec.applicationRefs[].commonUpdateSettings.forceUpdate
         - .spec.applicationRefs[].commonUpdateSettings.versionConstraint
+        - .spec.applicationRefs[].images[].kustomize.imageAlias
