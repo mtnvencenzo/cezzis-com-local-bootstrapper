@@ -31,5 +31,11 @@ spec:
     # 2. Ignore the structural normalization on your ImageUpdater
     - group: argocd-image-updater.argoproj.io
       kind: ImageUpdater
-      jsonPointers:
-        - /spec
+      jqPathExpressions:
+        # Ignore useAnnotations regardless of where it is in the spec
+        - .spec.useAnnotations
+        - .spec.applicationRefs[].useAnnotations
+        # Ignore injected defaults in the common settings
+        - .spec.applicationRefs[].commonUpdateSettings.forceUpdate
+        # Ignore the versionConstraint because the controller often consumes/clears it
+        - .spec.applicationRefs[].commonUpdateSettings.versionConstraint
