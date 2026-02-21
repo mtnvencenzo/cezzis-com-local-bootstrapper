@@ -22,6 +22,7 @@ spec:
       - CreateNamespace=true
       - Replace=true
       - RespectIgnoreDifferences=true
+      - ApplyOutOfSyncOnly=false
   ignoreDifferences:
     # 1. Ignore image tag updates on your Job
     - group: ""
