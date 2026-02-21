@@ -3,6 +3,11 @@ kind: Job
 metadata:
   name: cezzis-com-local-bootstrapper
   namespace: cezzis
+  annotations:
+    # This triggers the job EVERY time ArgoCD syncs (including Image Updates)
+    argocd.argoproj.io/hook: Sync
+    # This deletes the old job automatically so the new one can start
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
   labels:
     app: cezzis-com-local-bootstrapper
     app.kubernetes.io/part-of: cezzis
