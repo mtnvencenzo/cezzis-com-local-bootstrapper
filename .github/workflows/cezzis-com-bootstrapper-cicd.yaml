@@ -5,11 +5,17 @@ on:
     branches: [main]
     paths-ignore:
       - '.iac/**'
+      - '.github/**'
+      - '.vscode/**'
+      - 'assets/**'
   push:
     branches: [main]
     paths-ignore:
       - '.iac/**'
-
+      - '.github/**'
+      - '.vscode/**'
+      - 'assets/**'
+      
   workflow_dispatch:
 
 jobs:
