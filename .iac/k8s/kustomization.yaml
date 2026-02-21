@@ -9,4 +9,4 @@ resources:
 
 images:
   - name: acrveceusgloshared001.azurecr.io/cezziscombootstrapper
-    newTag: 0.0.57
+    newTag: 0.0.59
