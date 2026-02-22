@@ -4,9 +4,9 @@ metadata:
   name: cezzis-com-local-bootstrapper
   namespace: cezzis
   annotations:
-    # Replace=true tells ArgoCD to delete and recreate the Job on each sync
-    # (Jobs are immutable, so patching would fail)
-    argocd.argoproj.io/sync-options: Replace=true
+    # Force + Replace tells ArgoCD to delete then recreate the Job on each sync
+    # (Jobs are immutable - spec.selector and template labels can't be patched)
+    argocd.argoproj.io/sync-options: Replace=true,Force=true
   labels:
     app: cezzis-com-local-bootstrapper
     app.kubernetes.io/part-of: cezzis
