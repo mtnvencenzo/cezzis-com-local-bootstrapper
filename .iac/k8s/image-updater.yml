@@ -2,9 +2,9 @@ apiVersion: argocd-image-updater.argoproj.io/v1alpha1
 kind: ImageUpdater
 metadata:
   name: cezzis-com-local-bootstrapper-updater
-  namespace: cezzis
+  namespace: argocd
 spec:
-  useAnnotations: false 
+  useAnnotations: false
   namespace: argocd
   applicationRefs:
     - namePattern: "cezzis-com-local-bootstrapper"
