@@ -6,5 +6,5 @@ resources:
   - cezzis-com-local-bootstrapper.yml
 images:
   - name: acrveceusgloshared001.azurecr.io/cezziscombootstrapper
-    newTag: 0.0.71
+    newTag: 0.0.72
     newName: acrveceusgloshared001.azurecr.io/cezziscombootstrapper
