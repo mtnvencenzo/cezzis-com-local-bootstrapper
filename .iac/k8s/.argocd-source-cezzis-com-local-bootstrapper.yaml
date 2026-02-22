@@ -1,3 +1,0 @@
-kustomize:
-  images:
-  - acrveceusgloshared001.azurecr.io/cezziscombootstrapper:0.0.67
