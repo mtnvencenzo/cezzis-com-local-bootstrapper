@@ -8,11 +8,10 @@ spec:
     - namePattern: "cezzis-com-local-bootstrapper"
       commonUpdateSettings:
         updateStrategy: "semver"
-        versionConstraint: "0.x"
         pullSecret: "pullsecret:argocd/acr-pull-secret"
       images:
         - alias: "cezziscombootstrapper"
-          imageName: "acrveceusgloshared001.azurecr.io/cezziscombootstrapper"
+          imageName: "acrveceusgloshared001.azurecr.io/cezziscombootstrapper:0.x"
           manifestTargets:
             kustomize:
               name: "acrveceusgloshared001.azurecr.io/cezziscombootstrapper"
