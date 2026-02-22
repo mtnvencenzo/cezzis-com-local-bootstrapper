@@ -4,22 +4,20 @@ metadata:
   name: cezzis-com-local-bootstrapper-updater
   namespace: argocd
 spec:
-  namespace: argocd
   applicationRefs:
     - namePattern: "cezzis-com-local-bootstrapper"
-      useAnnotations: false
       commonUpdateSettings:
-        forceUpdate: false
         updateStrategy: "semver"
         versionConstraint: "0.x"
         pullSecret: "pullsecret:argocd/acr-pull-secret"
       images:
-        - imageName: "acrveceusgloshared001.azurecr.io/cezziscombootstrapper"
-          alias: "cezziscombootstrapper"
-          kustomize:
-            imageAlias: "acrveceusgloshared001.azurecr.io/cezziscombootstrapper"
+        - alias: "cezziscombootstrapper"
+          imageName: "acrveceusgloshared001.azurecr.io/cezziscombootstrapper"
+          manifestTargets:
+            kustomize:
+              name: "acrveceusgloshared001.azurecr.io/cezziscombootstrapper"
   writeBackConfig:
     method: "git:secret:argocd/git-creds"
-    git:
+    gitConfig:
       branch: main
       writeBackTarget: kustomization

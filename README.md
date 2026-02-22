@@ -27,12 +27,15 @@ The bootstrapper provides a runtime process to create and configure instances of
 
 ## ArgoCD Installation
 
-Install as an ArgoCD app:
+Install the ArgoCD Application and ImageUpdater CR:
 
 ```shell
+# Install the ArgoCD Application
 kubectl apply -f https://raw.githubusercontent.com/mtnvencenzo/cezzis-com-local-bootstrapper/refs/heads/main/.iac/argocd/cezzis-com-local-boostrapper.yaml
+
+# Install the ImageUpdater CR (manages automatic image updates)
+kubectl apply -f https://raw.githubusercontent.com/mtnvencenzo/cezzis-com-local-bootstrapper/refs/heads/main/.iac/argocd/image-updater.yaml
 ```
 
 ## License
-
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
