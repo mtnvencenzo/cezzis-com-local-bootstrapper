@@ -5,6 +5,15 @@ metadata:
   namespace: argocd
   labels:
     app.kubernetes.io/part-of: cezzis
+  annotations:
+    argocd-image-updater.argoproj.io/image-list: "cezziscombootstrapper=acrveceusgloshared001.azurecr.io/cezziscombootstrapper"
+    argocd-image-updater.argoproj.io/cezziscombootstrapper.update-strategy: "semver"
+    argocd-image-updater.argoproj.io/cezziscombootstrapper.semver-constraint: "0.x"
+    argocd-image-updater.argoproj.io/cezziscombootstrapper.pull-secret: "pullsecret:argocd/acr-pull-secret"
+    argocd-image-updater.argoproj.io/cezziscombootstrapper.kustomize.image-name: "acrveceusgloshared001.azurecr.io/cezziscombootstrapper"
+    argocd-image-updater.argoproj.io/write-back-method: "git:secret:argocd/git-creds"
+    argocd-image-updater.argoproj.io/write-back-target: "kustomization"
+    argocd-image-updater.argoproj.io/git-branch: "main"
 spec:
   project: default
   source:
@@ -21,18 +30,5 @@ spec:
     syncOptions:
       - CreateNamespace=true
       - Replace=true
-      - RespectIgnoreDifferences=true
       - ApplyOutOfSyncOnly=false
       - PruneLast=true
-  ignoreDifferences:
-    - group: argocd-image-updater.argoproj.io
-      kind: ImageUpdater
-      name: cezzis-com-local-bootstrapper-updater
-      namespace: argocd
-      jqPathExpressions:
-        - .spec.useAnnotations
-        - .spec.applicationRefs[].useAnnotations
-        - .spec.applicationRefs[].commonUpdateSettings.forceUpdate
-        - .spec.applicationRefs[].commonUpdateSettings.versionConstraint
-        - .spec.applicationRefs[].images[].kustomize
-        - .spec.writeBackConfig.git
