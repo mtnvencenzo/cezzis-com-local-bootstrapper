@@ -8,6 +8,7 @@ spec:
     - namePattern: "cezzis-com-local-bootstrapper"
       commonUpdateSettings:
         updateStrategy: "semver"
+        forceUpdate: true
         pullSecret: "pullsecret:argocd/acr-pull-secret"
       images:
         - alias: "cezziscombootstrapper"
