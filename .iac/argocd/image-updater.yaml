@@ -9,7 +9,6 @@ spec:
       commonUpdateSettings:
         updateStrategy: "semver"
         forceUpdate: true
-        pullSecret: "pullsecret:argocd/acr-pull-secret"
       images:
         - alias: "cezziscombootstrapper"
           imageName: "acrveceusgloshared001.azurecr.io/cezziscombootstrapper:0.x"
