@@ -4,11 +4,12 @@ metadata:
   name: cezzis-com-local-bootstrapper-updater
   namespace: argocd
 spec:
-  useAnnotations: false
   namespace: argocd
   applicationRefs:
     - namePattern: "cezzis-com-local-bootstrapper"
+      useAnnotations: false
       commonUpdateSettings:
+        forceUpdate: false
         updateStrategy: "semver"
         versionConstraint: "0.x"
         pullSecret: "pullsecret:argocd/acr-pull-secret"

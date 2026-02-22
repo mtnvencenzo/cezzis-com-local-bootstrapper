@@ -28,7 +28,7 @@ spec:
     - group: argocd-image-updater.argoproj.io
       kind: ImageUpdater
       name: cezzis-com-local-bootstrapper-updater
-      namespace: cezzis
+      namespace: argocd
       jqPathExpressions:
         - .spec.useAnnotations
         - .spec.applicationRefs[].useAnnotations
