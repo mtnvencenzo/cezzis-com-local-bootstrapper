@@ -4,11 +4,8 @@ metadata:
   name: cezzis-com-local-bootstrapper
   namespace: cezzis
   annotations:
-    # This triggers the job EVERY time ArgoCD syncs (including Image Updates)
-    argocd.argoproj.io/hook: Sync
-    # This deletes the old job automatically so the new one can start
-    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
-    # Forces a re-run even if the manifest looks the same
+    # Replace=true tells ArgoCD to delete and recreate the Job on each sync
+    # (Jobs are immutable, so patching would fail)
     argocd.argoproj.io/sync-options: Replace=true
   labels:
     app: cezzis-com-local-bootstrapper
