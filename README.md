@@ -1,45 +1,38 @@
 
-# Cezzis.com Cocktails AI Search API
+# Cezzis.com Bootstrapper
 
-This repository provides the backend API for cocktail search and conversational capabilities as part of the broader Cezzis.com Retrieval-Augmented Generation (RAG) and agentic workflow ecosystem.
+This repository provides a bootstrapper for Cezzis.com, designed to facilitate the setup, configuration, and management of local development environments for Cezzis.com services. The bootstrapper automates the provisioning of essential infrastructure components, messaging systems, and storage solutions, enabling developers to quickly start and test Cezzis.com applications locally.
 
-This API is designed to work in conjunction with the [Cezzis.com Ingestion Agentic Workflow](https://github.com/mtnvencenzo/cezzis-com-ingestion-agentic-wf) repository, which manages the ingestion and agentic orchestration for cocktail data and related conversational flows.
+## Features
 
-## Overview
+- **Automated Infrastructure Setup:**
+	- CosmosDB
+	- Qdrant
+	- Kafka
+	- RabbitMQ
+	- Azure Blob Storage
+- **Modular Architecture:**
+	- Organized by domain, infrastructure, and application layers
+	- Extensible command structure for provisioning and configuration
+- **Exception Handling & Observability:**
+	- Global exception handler
+	- OpenTelemetry integration for tracing
+- **Configuration Management:**
+	- Centralized options for each service
+	- Easy customization for local development
 
-**Status:** Work In Progress (WIP) — This project is in its early stages and actively under development.
+## Usage
 
-The API enables users to search for cocktails using semantic queries against a vector database, leveraging modern information retrieval techniques. In future releases, it will support contextual chat and conversation about cocktails powered by Large Language Models (LLMs), enabling advanced agentic flows and interactive experiences.
+The bootstrapper provides a runtime process to create and configure instances of CosmosDB, Qdrant, Kafka, RabbitMQ, and Azure Blob Storage. Each command is modular and can be extended or customized for additional services.
 
-### Key Features
-- FastAPI-based RESTful API
-- Semantic cocktail search using vector embeddings
-- Modular architecture for future conversational AI capabilities
-- Designed for integration with Cezzis.com RAG and agentic systems
+## ArgoCD Installation
 
-### Roadmap
-- [x] Initial API and vector search endpoints
-- [ ] Contextual chat and conversation via LLMs
-- [ ] Enhanced cocktail metadata and user interaction
+Install as an ArgoCD app:
 
-## Getting Started
-
-This project uses [FastAPI](https://fastapi.tiangolo.com/) and is managed with Poetry. To install dependencies:
-
-```bash
-poetry install
+```shell
+kubectl apply -f https://raw.githubusercontent.com/mtnvencenzo/cezzis-com-local-bootstrapper/refs/heads/main/.iac/argocd/cezzis-com-local-boostrapper.yaml
 ```
-
-To run the development server:
-
-```bash
-poetry run uvicorn src.cezzis_com_cocktails_aisearch.main:app --reload
-```
-
-## Contributing
-
-Contributions are welcome! Please open issues or pull requests to help improve the API and its capabilities.
 
 ## License
 
-This project is licensed under the MIT License.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.

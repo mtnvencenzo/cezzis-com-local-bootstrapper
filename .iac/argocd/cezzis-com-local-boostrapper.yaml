@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: cezzis-com-local-bootstrapper
-  namespace: argocd
+  namespace: cezzis
   labels:
     app.kubernetes.io/part-of: cezzis
 spec:
