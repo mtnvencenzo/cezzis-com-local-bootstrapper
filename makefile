@@ -45,4 +45,3 @@ all:
 	@make standards
 	@make coverage
 	@make build
-	
