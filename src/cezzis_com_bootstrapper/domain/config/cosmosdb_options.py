@@ -21,6 +21,7 @@ class CosmosDbOptions(BaseSettings):
 
     account_key: str = Field(default="", validation_alias="COSMOSDB_ACCOUNT_KEY")
     account_endpoint: str = Field(default="", validation_alias="COSMOSDB_ACCOUNT_ENDPOINT")
+    enable_endpoint_discovery: bool = Field(default=True, validation_alias="COSMOSDB_ENABLE_ENDPOINT_DISCOVERY")
     cocktails_database_name: str = Field(default="", validation_alias="COSMOSDB_COCKTAILS_DATABASE_NAME")
     cocktails_container_defs: str = Field(default="", validation_alias="COSMOSDB_COCKTAILS_CONTAINER_DEFS")
 

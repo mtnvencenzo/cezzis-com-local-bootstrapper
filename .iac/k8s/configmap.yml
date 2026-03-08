@@ -30,6 +30,7 @@ data:
   KAFKA_DEFAULT_TOPIC_PARTITIONS: "4"
   KAFKA_SECURITY_PROTOCOL: "PLAINTEXT"
   COSMOSDB_ACCOUNT_ENDPOINT: "https://cosmosdb.azure-platform.svc.cluster.local:8081/"
+  COSMOSDB_ENABLE_ENDPOINT_DISCOVERY: "false"
   COSMOSDB_COCKTAILS_DATABASE_NAME: "cocktails-db-prd"
   COSMOSDB_COCKTAILS_CONTAINER_DEFS: "cezzis-cocktails-cocktail:/id,cezzis-cocktails-ingredient:/id,cezzis-device-auth:/id"
   OTEL_EXPORTER_OTLP_ENDPOINT: "http://otel-collector.openobserve-platform.svc.cluster.local:4318"
