@@ -28,7 +28,9 @@ spec:
             - configMapRef:
                 name: cezzis-com-local-bootstrapper-config
             - secretRef:
-                name: cezzis-com-local-bootstrapper-secrets
+                name: cezzis-com-cocktails-bootstrapper-secrets
+            - secretRef:
+                name: cezzis-com-cocktails-bootstrapper-shared-secrets
           volumeMounts:
             - name: rabbitmq-config
               mountPath: /config/rabbitmq.json
