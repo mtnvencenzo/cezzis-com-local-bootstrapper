@@ -7,14 +7,14 @@ on:
       - '.iac/**'
       - '.github/**'
       - '.vscode/**'
-      - 'assets/**'
+      - '.assets/**'
   push:
     branches: [main]
     paths-ignore:
       - '.iac/**'
       - '.github/**'
       - '.vscode/**'
-      - 'assets/**'
+      - '.assets/**'
       
   workflow_dispatch:
 
