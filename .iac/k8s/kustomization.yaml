@@ -4,7 +4,7 @@ resources:
   - configmap.yml
   - external-secrets.yml
   - rabbitmq-configmap.yml
-  - cezzis-com-local-bootstrapper.yml
+  - job.yml
 images:
   - name: acrveceusgloshared001.azurecr.io/cezziscombootstrapper
     newTag: 0.0.75
