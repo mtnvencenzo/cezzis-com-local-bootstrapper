@@ -54,3 +54,35 @@ class QdrantService(IQdrantService):
                     "vector_size": vector_size,
                 },
             )
+
+    async def create_index_if_not_exists(self, collection_name: str, field_name: str, field_schema: str):
+        # Get the collection and add the indexes if they don't exist
+        col = await asyncio.to_thread(self.qdrant_client.get_collection, collection_name)
+
+        if col.payload_schema and field_name in col.payload_schema:
+            self.logger.info(
+                f"Collection '{collection_name}' already has an index on '{field_name}'.",
+                extra={
+                    "collection_name": collection_name,
+                },
+            )
+        else:
+            self.logger.info(
+                f"Creating index on collection '{collection_name}' for field '{field_name}'.",
+                extra={
+                    "collection_name": collection_name,
+                },
+            )
+            await asyncio.to_thread(
+                self.qdrant_client.create_payload_index,
+                collection_name=collection_name,
+                field_name=field_name,
+                field_schema=models.PayloadSchemaType(field_schema),
+            )
+
+            self.logger.info(
+                f"Index on collection '{collection_name}' for field '{field_name}' created.",
+                extra={
+                    "collection_name": collection_name,
+                },
+            )

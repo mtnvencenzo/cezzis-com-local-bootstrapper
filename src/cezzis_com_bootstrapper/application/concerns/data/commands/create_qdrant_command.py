@@ -33,4 +33,14 @@ class CreateQdrantCommandHandler:
             collection_name=self.qdrant_options.collection_name,
             vector_size=self.qdrant_options.vector_size,
         )
+
+        index_fields = self.qdrant_options.raw_index_fields.split(",") if self.qdrant_options.raw_index_fields else []
+        for index_field in index_fields:
+            field_name, field_type = index_field.split(":")
+            await self.qdrant_service.create_index_if_not_exists(
+                collection_name=self.qdrant_options.collection_name,
+                field_name=field_name,
+                field_schema=field_type,
+            )
+
         return True

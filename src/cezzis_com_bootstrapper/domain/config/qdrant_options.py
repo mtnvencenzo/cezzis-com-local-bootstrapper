@@ -15,6 +15,7 @@ class QdrantOptions(BaseSettings):
         collection_name (str): The name of the Qdrant collection.
         vector_size (int): The size of the vectors stored in Qdrant.
         use_https (bool): Flag indicating whether to use HTTPS for connections.
+        raw_index_fields (str): Raw index fields configuration.
     """
 
     model_config = SettingsConfigDict(
@@ -27,6 +28,7 @@ class QdrantOptions(BaseSettings):
     collection_name: str = Field(default="", validation_alias="QDRANT_COLLECTION_NAME")
     vector_size: int = Field(default=0, validation_alias="QDRANT_VECTOR_SIZE")
     use_https: bool = Field(default=False, validation_alias="QDRANT_USE_HTTPS")
+    raw_index_fields: str = Field(default="", validation_alias="QDRANT_INDEX_FIELDS")
 
 
 _logger: logging.Logger = logging.getLogger("qdrant_options")

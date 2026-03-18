@@ -32,5 +32,6 @@ data:
   QDRANT_PORT: "6333"
   QDRANT_API_KEY: ""
   QDRANT_COLLECTION_NAME: "cocktails-prd"
+  QDRANT_INDEX_FIELDS: "metadata.keywords_search_words:keyword,metadata.ingredient_words:keyword,metadata.keywords_mood:keyword,metadata.keywords_occasion:keyword,metadata.keywords_season:keyword,metadata.keywords_temperature:keyword,metadata.keywords_strength:keyword,metadata.keywords_technique:keyword,metadata.keywords_cocktail_family:keyword,metadata.keywords_flavor_profile:keyword,metadata.keywords_base_spirit:keyword,metadata.serves:keyword,metadata.prep_time_minutes:keyword,metadata.ingredient_count:keyword,metadata.glassware_values:keyword,metadata.is_iba:keyword"
   QDRANT_VECTOR_SIZE: "768"
   QDRANT_USE_HTTPS: "false"
