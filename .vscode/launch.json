@@ -2,7 +2,7 @@
         "version": "0.2.0",
         "configurations": [
             {
-                "name": "Run: Bootstrapper",
+                "name": "k8s Debug: Bootstrapper",
                 "type": "debugpy",
                 "request": "launch",
                 "program": "main.py",
