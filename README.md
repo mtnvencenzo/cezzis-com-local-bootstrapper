@@ -6,8 +6,6 @@ This repository provides a bootstrapper for Cezzis.com, designed to facilitate t
 ## Features
 
 - **Automated Infrastructure Setup:**
-	- CosmosDB
-	- Qdrant
 	- Kafka
 	- RabbitMQ
 	- Azure Blob Storage
@@ -23,7 +21,7 @@ This repository provides a bootstrapper for Cezzis.com, designed to facilitate t
 
 ## Usage
 
-The bootstrapper provides a runtime process to create and configure instances of CosmosDB, Qdrant, Kafka, RabbitMQ, and Azure Blob Storage. Each command is modular and can be extended or customized for additional services.
+The bootstrapper provides a runtime process to create and configure instances of Kafka, RabbitMQ, and Azure Blob Storage. Each command is modular and can be extended or customized for additional services.
 
 ## ArgoCD Installation
 

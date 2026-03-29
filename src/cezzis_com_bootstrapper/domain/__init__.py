@@ -2,12 +2,10 @@ from cezzis_com_bootstrapper.domain.config import (
     AzureStorageOptions,
     KafkaOptions,
     OTelOptions,
-    QdrantOptions,
     RabbitMqOptions,
     get_azure_storage_options,
     get_kafka_options,
     get_otel_options,
-    get_qdrant_options,
     get_rabbitmq_options,
 )
 from cezzis_com_bootstrapper.domain.messaging import (
@@ -28,8 +26,6 @@ __all__ = [
     "get_rabbitmq_options",
     "AzureStorageOptions",
     "get_azure_storage_options",
-    "QdrantOptions",
-    "get_qdrant_options",
     "RabbitMqBinding",
     "RabbitMqExchange",
     "RabbitMqQueue",

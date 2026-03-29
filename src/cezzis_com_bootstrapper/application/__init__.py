@@ -2,8 +2,6 @@ from cezzis_com_bootstrapper.application.behaviors import initialize_opentelemet
 from cezzis_com_bootstrapper.application.concerns import (
     CreateBlobStorageCommand,
     CreateBlobStorageCommandHandler,
-    CreateCosmosDbCommand,
-    CreateCosmosDbCommandHandler,
     CreateKafkaCommand,
     CreateKafkaCommandHandler,
     CreateRabbitMqCommand,
@@ -16,8 +14,6 @@ __all__ = [
     "CreateBlobStorageCommandHandler",
     "CreateKafkaCommand",
     "CreateKafkaCommandHandler",
-    "CreateCosmosDbCommand",
-    "CreateCosmosDbCommandHandler",
     "CreateRabbitMqCommand",
     "CreateRabbitMqCommandHandler",
 ]
