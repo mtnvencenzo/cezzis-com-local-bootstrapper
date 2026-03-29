@@ -15,6 +15,14 @@
             "auto_delete": false,
             "internal": false,
             "arguments": {}
+        },
+        {
+            "name": "cocktail-updates-topic",
+            "type": "topic",
+            "durable": true,
+            "auto_delete": false,
+            "internal": false,
+            "arguments": {}
         }
     ],
     "queues": [
@@ -44,6 +52,12 @@
         },
         {
             "name": "zoho-email-dispatch-queue",
+            "durable": true,
+            "auto_delete": false,
+            "arguments": {}
+        },
+        {
+            "name": "cocktail-updates-queue",
             "durable": true,
             "auto_delete": false,
             "arguments": {}
@@ -83,6 +97,13 @@
             "destination": "idp-account-password-sync-queue",
             "destination_type": "queue",
             "routing_key": "account.owned.password.updated",
+            "arguments": {}
+        },
+        {
+            "source": "cocktail-updates-topic",
+            "destination": "cocktail-updates-queue",
+            "destination_type": "queue",
+            "routing_key": "cocktail.*.updated",
             "arguments": {}
         }
     ]
