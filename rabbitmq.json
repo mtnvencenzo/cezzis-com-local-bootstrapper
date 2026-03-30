@@ -23,43 +23,87 @@
             "auto_delete": false,
             "internal": false,
             "arguments": {}
+        },
+        {
+            "name": "deadletter-topic",
+            "type": "topic",
+            "durable": true,
+            "auto_delete": false,
+            "internal": false,
+            "arguments": {}
         }
     ],
     "queues": [
         {
             "name": "cocktail-ratings-sync-queue",
-            "durable": true,
-            "auto_delete": false,
+            "arguments": {
+                "x-queue-type": "quorum",
+                "x-delivery-limit": 3,
+                "x-dead-letter-exchange": "deadletter-topic"
+            }
+        },
+        {
+            "name": "cocktail-ratings-sync-queue-dlx",
             "arguments": {}
         },
         {
             "name": "idp-account-profile-sync-queue",
-            "durable": true,
-            "auto_delete": false,
+            "arguments": {
+                "x-queue-type": "quorum",
+                "x-delivery-limit": 3,
+                "x-dead-letter-exchange": "deadletter-topic"
+            }
+        },
+        {
+            "name": "idp-account-profile-sync-queue-dlx",
             "arguments": {}
         },
         {
             "name": "idp-account-email-sync-queue",
-            "durable": true,
-            "auto_delete": false,
+            "arguments": {
+                "x-queue-type": "quorum",
+                "x-delivery-limit": 3,
+                "x-dead-letter-exchange": "deadletter-topic"
+            }
+        },
+        {
+            "name": "idp-account-email-sync-queue-dlx",
             "arguments": {}
         },
         {
             "name": "idp-account-password-sync-queue",
-            "durable": true,
-            "auto_delete": false,
+            "arguments": {
+                "x-queue-type": "quorum",
+                "x-delivery-limit": 3,
+                "x-dead-letter-exchange": "deadletter-topic"
+            }
+        },
+        {
+            "name": "idp-account-password-sync-queue-dlx",
             "arguments": {}
         },
         {
             "name": "zoho-email-dispatch-queue",
-            "durable": true,
-            "auto_delete": false,
+            "arguments": {
+                "x-queue-type": "quorum",
+                "x-delivery-limit": 3,
+                "x-dead-letter-exchange": "deadletter-topic"
+            }
+        },
+        {
+            "name": "zoho-email-dispatch-queue-dlx",
             "arguments": {}
         },
         {
             "name": "cocktail-updates-queue",
-            "durable": true,
-            "auto_delete": false,
+            "arguments": {
+                "x-queue-type": "quorum",
+                "x-delivery-limit": 3,
+                "x-dead-letter-exchange": "deadletter-topic"
+            }
+        },
+        {
+            "name": "cocktail-updates-queue-dlx",
             "arguments": {}
         }
     ],
@@ -102,6 +146,48 @@
         {
             "source": "cocktail-updates-topic",
             "destination": "cocktail-updates-queue",
+            "destination_type": "queue",
+            "routing_key": "cocktail.*.updated",
+            "arguments": {}
+        },
+        {
+            "source": "deadletter-topic",
+            "destination": "cocktail-ratings-sync-queue-dlx",
+            "destination_type": "queue",
+            "routing_key": "cocktail.*.rated",
+            "arguments": {}
+        },
+        {
+            "source": "deadletter-topic",
+            "destination": "zoho-email-dispatch-queue-dlx",
+            "destination_type": "queue",
+            "routing_key": "cocktail.*.recommendation",
+            "arguments": {}
+        },
+        {
+            "source": "deadletter-topic",
+            "destination": "idp-account-profile-sync-queue-dlx",
+            "destination_type": "queue",
+            "routing_key": "account.owned.profile.updated",
+            "arguments": {}
+        },
+        {
+            "source": "deadletter-topic",
+            "destination": "idp-account-email-sync-queue-dlx",
+            "destination_type": "queue",
+            "routing_key": "account.owned.email.updated",
+            "arguments": {}
+        },
+        {
+            "source": "deadletter-topic",
+            "destination": "idp-account-password-sync-queue-dlx",
+            "destination_type": "queue",
+            "routing_key": "account.owned.password.updated",
+            "arguments": {}
+        },
+        {
+            "source": "deadletter-topic",
+            "destination": "cocktail-updates-queue-dlx",
             "destination_type": "queue",
             "routing_key": "cocktail.*.updated",
             "arguments": {}
