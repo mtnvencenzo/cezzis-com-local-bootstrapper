@@ -7,5 +7,5 @@ resources:
   - job.yml
 images:
   - name: acrveceusgloshared001.azurecr.io/cezziscombootstrapper
-    newTag: 0.0.79
+    newTag: 0.0.80
     newName: acrveceusgloshared001.azurecr.io/cezziscombootstrapper
