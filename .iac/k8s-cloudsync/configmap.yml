@@ -14,7 +14,7 @@ data:
   ENABLE_BLOB_STORAGE: "false"
   ENABLE_KAFKA: "true"
   KAFKA_BOOTSTRAP_SERVERS: "kafka-broker-1.kafka-platform.svc.cluster.local:19092"
-  KAFKA_COCKTAILS_TOPIC_DEFS: "cocktails-update-topic-prd,cocktails-ingestion-extraction-results-prd,cocktails-ingestion-chunking-results-prd"
+  KAFKA_COCKTAILS_TOPIC_DEFS: "cocktails-update-topic-cloudsync,cocktails-ingestion-extraction-results-cloudsync,cocktails-ingestion-chunking-results-cloudsync"
   KAFKA_DEFAULT_TOPIC_PARTITIONS: "4"
   KAFKA_SECURITY_PROTOCOL: "PLAINTEXT"
   OTEL_EXPORTER_OTLP_ENDPOINT: "http://otel-collector.openobserve-platform.svc.cluster.local:4318"
