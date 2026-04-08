@@ -19,5 +19,6 @@ spec:
       prune: true
       selfHeal: true
     syncOptions:
+      - Replace=true
       - ApplyOutOfSyncOnly=false
       - PruneLast=true
