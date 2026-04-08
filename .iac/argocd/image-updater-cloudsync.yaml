@@ -1,11 +1,11 @@
 apiVersion: argocd-image-updater.argoproj.io/v1alpha1
 kind: ImageUpdater
 metadata:
-  name: cezzis-com-local-bootstrapper-updater
+  name: cezzis-com-local-bootstrapper-cloudsync-updater
   namespace: argocd
 spec:
   applicationRefs:
-    - namePattern: "cezzis-com-local-bootstrapper"
+    - namePattern: "cezzis-com-local-bootstrapper-cloudsync"
       commonUpdateSettings:
         updateStrategy: "semver"
         forceUpdate: true
@@ -19,4 +19,4 @@ spec:
     method: "git:secret:argocd/git-creds"
     gitConfig:
       branch: main
-      writeBackTarget: kustomization
+      writeBackTarget: "kustomization:/.iac/k8s-cloudsync"

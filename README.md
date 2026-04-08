@@ -27,12 +27,36 @@ The bootstrapper provides a runtime process to create and configure instances of
 
 Install the ArgoCD Application and ImageUpdater CR:
 
+### K8s Cloud Sync (prod)
 ```shell
 # Install the ArgoCD Application
-kubectl apply -f https://raw.githubusercontent.com/mtnvencenzo/cezzis-com-local-bootstrapper/refs/heads/main/.iac/argocd/cezzis-com-local-boostrapper.yaml
+kubectl apply -f https://raw.githubusercontent.com/mtnvencenzo/cezzis-com-local-bootstrapper/refs/heads/main/.iac/argocd/cezzis-com-local-bootstrapper-cloudsync.yaml
 
 # Install the ImageUpdater CR (manages automatic image updates)
-kubectl apply -f https://raw.githubusercontent.com/mtnvencenzo/cezzis-com-local-bootstrapper/refs/heads/main/.iac/argocd/image-updater.yaml
+kubectl apply -f https://raw.githubusercontent.com/mtnvencenzo/cezzis-com-local-bootstrapper/refs/heads/main/.iac/argocd/image-updater-cloudsync.yaml
+
+# Delete the ArgoCD Application
+kubectl delete -f https://raw.githubusercontent.com/mtnvencenzo/cezzis-com-local-bootstrapper/refs/heads/main/.iac/argocd/cezzis-com-local-bootstrapper-cloudsync.yaml
+
+# Delete the ImageUpdater CR (manages automatic image updates)
+kubectl delete -f https://raw.githubusercontent.com/mtnvencenzo/cezzis-com-local-bootstrapper/refs/heads/main/.iac/argocd/image-updater-cloudsync.yaml
+
+```
+
+### K8s Loc
+```shell
+# Install the ArgoCD Application
+kubectl apply -f https://raw.githubusercontent.com/mtnvencenzo/cezzis-com-local-bootstrapper/refs/heads/main/.iac/argocd/cezzis-com-local-bootstrapper-loc.yaml
+
+# Install the ImageUpdater CR (manages automatic image updates)
+kubectl apply -f https://raw.githubusercontent.com/mtnvencenzo/cezzis-com-local-bootstrapper/refs/heads/main/.iac/argocd/image-updater-loc.yaml
+
+# Delete the ArgoCD Application
+kubectl delete -f https://raw.githubusercontent.com/mtnvencenzo/cezzis-com-local-bootstrapper/refs/heads/main/.iac/argocd/cezzis-com-local-bootstrapper-loc.yaml
+
+# Delete the ImageUpdater CR (manages automatic image updates)
+kubectl delete -f https://raw.githubusercontent.com/mtnvencenzo/cezzis-com-local-bootstrapper/refs/heads/main/.iac/argocd/image-updater-loc.yaml
+
 ```
 
 ## License
