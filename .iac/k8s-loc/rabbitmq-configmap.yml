@@ -71,18 +71,6 @@ data:
                 "arguments": {}
             },
             {
-                "name": "idp-account-email-sync-queue",
-                "arguments": {
-                    "x-queue-type": "quorum",
-                    "x-delivery-limit": 3,
-                    "x-dead-letter-exchange": "deadletter-topic"
-                }
-            },
-            {
-                "name": "idp-account-email-sync-queue-dlx",
-                "arguments": {}
-            },
-            {
                 "name": "idp-account-password-sync-queue",
                 "arguments": {
                     "x-queue-type": "quorum",
@@ -143,13 +131,6 @@ data:
             },
             {
                 "source": "account-updates-topic",
-                "destination": "idp-account-email-sync-queue",
-                "destination_type": "queue",
-                "routing_key": "account.owned.email.updated",
-                "arguments": {}
-            },
-            {
-                "source": "account-updates-topic",
                 "destination": "idp-account-password-sync-queue",
                 "destination_type": "queue",
                 "routing_key": "account.owned.password.updated",
@@ -181,13 +162,6 @@ data:
                 "destination": "idp-account-profile-sync-queue-dlx",
                 "destination_type": "queue",
                 "routing_key": "account.owned.profile.updated",
-                "arguments": {}
-            },
-            {
-                "source": "deadletter-topic",
-                "destination": "idp-account-email-sync-queue-dlx",
-                "destination_type": "queue",
-                "routing_key": "account.owned.email.updated",
                 "arguments": {}
             },
             {

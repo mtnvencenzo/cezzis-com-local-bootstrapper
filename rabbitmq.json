@@ -51,14 +51,6 @@
             "arguments": {}
         },
         {
-            "name": "idp-account-email-sync-queue",
-            "arguments": {}
-        },
-        {
-            "name": "idp-account-email-sync-queue-dlx",
-            "arguments": {}
-        },
-        {
             "name": "idp-account-password-sync-queue",
             "arguments": {}
         },
