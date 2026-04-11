@@ -4,13 +4,13 @@ on:
   pull_request:
     branches: [main]
     paths-ignore:
-      - '.iac/k8s/kustomization.yaml'
+      - '.iac/k8s-cloudsync/kustomization.yaml'
       - '.vscode/**'
       - '.assets/**'
   push:
     branches: [main]
     paths-ignore:
-      - '.iac/k8s/kustomization.yaml'
+      - '.iac/k8s-loc/kustomization.yaml'
       - '.vscode/**'
       - '.assets/**'
       
