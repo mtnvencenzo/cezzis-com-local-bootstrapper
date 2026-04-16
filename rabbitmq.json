@@ -87,7 +87,7 @@
             "source": "cocktail-user-actions-topic",
             "destination": "zoho-email-dispatch-queue",
             "destination_type": "queue",
-            "routing_key": "cocktail.*.recommendation",
+            "routing_key": "cocktail.*.email",
             "arguments": {}
         },
         {
@@ -129,7 +129,7 @@
             "source": "deadletter-topic",
             "destination": "zoho-email-dispatch-queue-dlx",
             "destination_type": "queue",
-            "routing_key": "cocktail.*.recommendation",
+            "routing_key": "cocktail.*.email",
             "arguments": {}
         },
         {
