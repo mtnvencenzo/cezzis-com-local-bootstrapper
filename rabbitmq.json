@@ -99,13 +99,6 @@
         },
         {
             "source": "account-updates-topic",
-            "destination": "idp-account-email-sync-queue",
-            "destination_type": "queue",
-            "routing_key": "account.owned.email.updated",
-            "arguments": {}
-        },
-        {
-            "source": "account-updates-topic",
             "destination": "idp-account-password-sync-queue",
             "destination_type": "queue",
             "routing_key": "account.owned.password.updated",
@@ -137,13 +130,6 @@
             "destination": "idp-account-profile-sync-queue-dlx",
             "destination_type": "queue",
             "routing_key": "account.owned.profile.updated",
-            "arguments": {}
-        },
-        {
-            "source": "deadletter-topic",
-            "destination": "idp-account-email-sync-queue-dlx",
-            "destination_type": "queue",
-            "routing_key": "account.owned.email.updated",
             "arguments": {}
         },
         {

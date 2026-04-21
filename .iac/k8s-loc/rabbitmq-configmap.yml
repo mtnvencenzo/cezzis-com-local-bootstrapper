@@ -48,11 +48,7 @@ data:
         "queues": [
             {
                 "name": "cocktail-ratings-sync-queue",
-                "arguments": {
-                    "x-queue-type": "quorum",
-                    "x-delivery-limit": 3,
-                    "x-dead-letter-exchange": "deadletter-topic"
-                }
+                "arguments": {}
             },
             {
                 "name": "cocktail-ratings-sync-queue-dlx",
@@ -60,11 +56,7 @@ data:
             },
             {
                 "name": "idp-account-profile-sync-queue",
-                "arguments": {
-                    "x-queue-type": "quorum",
-                    "x-delivery-limit": 3,
-                    "x-dead-letter-exchange": "deadletter-topic"
-                }
+                "arguments": {}
             },
             {
                 "name": "idp-account-profile-sync-queue-dlx",
@@ -72,11 +64,7 @@ data:
             },
             {
                 "name": "idp-account-password-sync-queue",
-                "arguments": {
-                    "x-queue-type": "quorum",
-                    "x-delivery-limit": 3,
-                    "x-dead-letter-exchange": "deadletter-topic"
-                }
+                "arguments": {}
             },
             {
                 "name": "idp-account-password-sync-queue-dlx",
@@ -84,11 +72,7 @@ data:
             },
             {
                 "name": "zoho-email-dispatch-queue",
-                "arguments": {
-                    "x-queue-type": "quorum",
-                    "x-delivery-limit": 3,
-                    "x-dead-letter-exchange": "deadletter-topic"
-                }
+                "arguments": {}
             },
             {
                 "name": "zoho-email-dispatch-queue-dlx",
@@ -96,11 +80,7 @@ data:
             },
             {
                 "name": "cocktail-updates-queue",
-                "arguments": {
-                    "x-queue-type": "quorum",
-                    "x-delivery-limit": 3,
-                    "x-dead-letter-exchange": "deadletter-topic"
-                }
+                "arguments": {}
             },
             {
                 "name": "cocktail-updates-queue-dlx",
