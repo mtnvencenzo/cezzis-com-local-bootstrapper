@@ -14,7 +14,7 @@ data:
   ENABLE_BLOB_STORAGE: "true"
   ENABLE_KAFKA: "true"
   ACCOUNT_AVATARS_CONTAINER_NAME: "account-avatars-loc"
-  KAFKA_BOOTSTRAP_SERVERS: "kafka-broker-1.kafka-platform.svc.cluster.local:19092"
+  KAFKA_BOOTSTRAP_SERVERS: "kafka-broker-1.kafka-platform.svc.cluster.local:19092,kafka-broker-2.kafka-platform.svc.cluster.local:19093,kafka-broker-3.kafka-platform.svc.cluster.local:19095"
   KAFKA_COCKTAILS_TOPIC_DEFS: "cocktails-update-topic-loc,cocktails-ingestion-extraction-results-loc,cocktails-ingestion-chunking-results-loc"
   KAFKA_DEFAULT_TOPIC_PARTITIONS: "4"
   KAFKA_SECURITY_PROTOCOL: "PLAINTEXT"
