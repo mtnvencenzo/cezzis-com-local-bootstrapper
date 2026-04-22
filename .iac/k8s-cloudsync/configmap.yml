@@ -17,6 +17,6 @@ data:
   KAFKA_COCKTAILS_TOPIC_DEFS: "cocktails-update-topic-cloudsync,cocktails-ingestion-extraction-results-cloudsync,cocktails-ingestion-chunking-results-cloudsync"
   KAFKA_DEFAULT_TOPIC_PARTITIONS: "4"
   KAFKA_SECURITY_PROTOCOL: "PLAINTEXT"
-  OTEL_EXPORTER_OTLP_ENDPOINT: "http://otel-collector.openobserve-platform.svc.cluster.local:4318"
+  OTEL_EXPORTER_OTLP_ENDPOINT: "http://otel-collector.elastic-platform.svc.cluster.local:4318"
   OTEL_SERVICE_NAME: "cezzis-com-bootstrapper-cloudsync"
   OTEL_SERVICE_NAMESPACE: "cezzis"

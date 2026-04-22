@@ -18,7 +18,7 @@ data:
   KAFKA_COCKTAILS_TOPIC_DEFS: "cocktails-update-topic-loc,cocktails-ingestion-extraction-results-loc,cocktails-ingestion-chunking-results-loc"
   KAFKA_DEFAULT_TOPIC_PARTITIONS: "4"
   KAFKA_SECURITY_PROTOCOL: "PLAINTEXT"
-  OTEL_EXPORTER_OTLP_ENDPOINT: "http://otel-collector.openobserve-platform.svc.cluster.local:4318"
+  OTEL_EXPORTER_OTLP_ENDPOINT: "http://otel-collector.elastic-platform.svc.cluster.local:4318"
   OTEL_SERVICE_NAME: "cezzis-com-bootstrapper"
   OTEL_SERVICE_NAMESPACE: "cezzis"
   RABBITMQ_VHOST: "cezzis-loc"
