@@ -85,6 +85,14 @@ data:
             {
                 "name": "cocktail-updates-queue-dlx",
                 "arguments": {}
+            },
+            {
+                "name": "accounts-sync-cocktail-updates-queue",
+                "arguments": {}
+            },
+            {
+                "name": "accounts-sync-cocktail-updates-queue-dlx",
+                "arguments": {}
             }
         ],
         "bindings": [
@@ -124,6 +132,13 @@ data:
                 "arguments": {}
             },
             {
+                "source": "cocktail-updates-topic",
+                "destination": "accounts-sync-cocktail-updates-queue",
+                "destination_type": "queue",
+                "routing_key": "cocktail.*.updated",
+                "arguments": {}
+            },
+            {
                 "source": "deadletter-topic",
                 "destination": "cocktail-ratings-sync-queue-dlx",
                 "destination_type": "queue",
@@ -156,6 +171,13 @@ data:
                 "destination": "cocktail-updates-queue-dlx",
                 "destination_type": "queue",
                 "routing_key": "cocktail.*.updated",
+                "arguments": {}
+            },
+            {
+                "source": "deadletter-topic",
+                "destination": "accounts-sync-cocktail-updates-queue-dlx",
+                "destination_type": "queue",
+                "routing_key": "accounts.cocktail.*.updated",
                 "arguments": {}
             }
         ]
