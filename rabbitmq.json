@@ -25,6 +25,14 @@
             "arguments": {}
         },
         {
+            "name": "cocktail-updates-schedule-topic",
+            "type": "topic",
+            "durable": true,
+            "auto_delete": false,
+            "internal": false,
+            "arguments": {}
+        },
+        {
             "name": "deadletter-topic",
             "type": "topic",
             "durable": true,
@@ -72,6 +80,14 @@
         },
         {
             "name": "cocktail-updates-queue-dlx",
+            "arguments": {}
+        },
+        {
+            "name": "cocktail-updates-scheduled-queue",
+            "arguments": {}
+        },
+        {
+            "name": "cocktail-updates-scheduled-queue-dlx",
             "arguments": {}
         },
         {
@@ -124,6 +140,13 @@
             "destination": "accounts-sync-cocktail-updates-queue",
             "destination_type": "queue",
             "routing_key": "cocktail.*.updated",
+            "arguments": {}
+        },
+        {
+            "source": "cocktail-updates-schedule-topic",
+            "destination": "cocktail-updates-scheduled-queue",
+            "destination_type": "queue",
+            "routing_key": "cocktail.*.updated-scheduled",
             "arguments": {}
         },
         {
