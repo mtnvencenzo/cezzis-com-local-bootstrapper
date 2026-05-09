@@ -1,0 +1,18 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "type": "command",
+        "command": "python3 ./.github/hooks/scripts/policy_hook.py",
+        "timeout": 10
+      }
+    ],
+    "PostToolUse": [
+      {
+        "type": "command",
+        "command": "python3 ./.github/hooks/scripts/policy_hook.py",
+        "timeout": 10
+      }
+    ]
+  }
+}
