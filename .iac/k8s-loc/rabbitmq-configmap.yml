@@ -180,6 +180,20 @@ data:
             },
             {
                 "source": "cocktail-user-actions-topic",
+                "destination": "zoho-email-dispatch-queue",
+                "destination_type": "queue",
+                "routing_key": "account.trial.welcome.email",
+                "arguments": {}
+            },
+            {
+                "source": "cocktail-user-actions-topic",
+                "destination": "zoho-email-dispatch-queue",
+                "destination_type": "queue",
+                "routing_key": "account.trial.signup.notify.email",
+                "arguments": {}
+            },
+            {
+                "source": "cocktail-user-actions-topic",
                 "destination": "cocktail-reactions-sync-queue",
                 "destination_type": "queue",
                 "routing_key": "cocktail.*.reacted",
