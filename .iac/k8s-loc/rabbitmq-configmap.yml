@@ -194,6 +194,13 @@ data:
             },
             {
                 "source": "cocktail-user-actions-topic",
+                "destination": "zoho-email-dispatch-queue",
+                "destination_type": "queue",
+                "routing_key": "account.new.signup.notify.email",
+                "arguments": {}
+            },
+            {
+                "source": "cocktail-user-actions-topic",
                 "destination": "cocktail-reactions-sync-queue",
                 "destination_type": "queue",
                 "routing_key": "cocktail.*.reacted",
