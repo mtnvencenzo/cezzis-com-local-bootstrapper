@@ -53,14 +53,6 @@ data:
                 "arguments": {}
             },
             {
-                "name": "billing-updates-topic",
-                "type": "topic",
-                "durable": true,
-                "auto_delete": false,
-                "internal": false,
-                "arguments": {}
-            },
-            {
                 "name": "deadletter-topic",
                 "type": "topic",
                 "durable": true,
@@ -152,14 +144,6 @@ data:
             },
             {
                 "name": "accounts-sync-ingredient-updates-queue-dlx",
-                "arguments": {}
-            },
-            {
-                "name": "billing-subscription-sync-queue",
-                "arguments": {}
-            },
-            {
-                "name": "billing-subscription-sync-queue-dlx",
                 "arguments": {}
             }
         ],
@@ -256,13 +240,6 @@ data:
                 "arguments": {}
             },
             {
-                "source": "billing-updates-topic",
-                "destination": "billing-subscription-sync-queue",
-                "destination_type": "queue",
-                "routing_key": "billing.subscription.changed",
-                "arguments": {}
-            },
-            {
                 "source": "deadletter-topic",
                 "destination": "cocktail-ratings-sync-queue-dlx",
                 "destination_type": "queue",
@@ -330,13 +307,6 @@ data:
                 "destination": "accounts-sync-ingredient-updates-queue-dlx",
                 "destination_type": "queue",
                 "routing_key": "ingredient.*.updated",
-                "arguments": {}
-            },
-            {
-                "source": "deadletter-topic",
-                "destination": "billing-subscription-sync-queue-dlx",
-                "destination_type": "queue",
-                "routing_key": "billing.subscription.changed",
                 "arguments": {}
             }
         ]
